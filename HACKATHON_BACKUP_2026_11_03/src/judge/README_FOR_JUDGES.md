@@ -1,6 +1,6 @@
 # FEMA Evidence & Oversight Graph: Read This First
 
-Phebe Arouni & Tom Jacobson | Dataset Access track | Submission of October 29, 2026 | App page and repeat rule updated November 2, 2026 (see "About the live app version")
+Phebe Arouni & Tom Jacobson | Dataset Access track | Submission of October 29, 2026 | App page and repeat rule updated November 2, 2026; repeat example and side-by-side view updated November 3, 2026 (see "About the live app version")
 
 You do not need any technical knowledge to judge this entry. Read the next part (1 minute), then try the app (2 minutes).
 
@@ -27,7 +27,7 @@ A person always makes the final decision. The tool only reads data. It cannot ch
 3. Click one of the three large question cards. The review starts right away:
    * **Are any road and bridge projects unusually expensive?** Hurricane Ian, Florida, 2022 (disaster 4673)
    * **Are any utility repairs unusually expensive?** Hurricane Ida, Louisiana, 2021 (disaster 4611)
-   * **Is the same project listed more than once?** Hurricane Ian, Florida, 2022 (disaster 4673)
+   * **Is the same project listed more than once?** Tropical Storm Helene, North Carolina, 2024 (disaster 4827)
 4. Watch the four progress steps. Step 2, "Running checks on live FEMA data", usually takes 5 to 15 seconds, and a timer shows the time so far. The app reports back only when the whole review is finished, so that step has no finer progress.
 5. Read the result from top to bottom:
    * **Headline**: one sentence saying what was found
@@ -35,20 +35,21 @@ A person always makes the final decision. The tool only reads data. It cannot ch
    * **Two charts**, drawn only from the returned results
    * **The rule, in plain English** and **What a flag does not mean**
    * For the utility repairs card, an **Evidence packet**: one project's original FEMA record, ready for a reviewer
+   * For the listed-twice card, **Look inside each group**: click a group to see its worksheets side by side. A checklist shows what they have in common (same applicant, disaster, type of work and title words), a second list shows the only differences, and the part of each title that changes is highlighted. Each group is labelled **Same wording** (only capitals, spacing or dashes differ), **Numbered series** (one number changes, such as Site 1 and Site 2) or **Several differences** (for example different street numbers), and the closest matches are listed first.
    * **For reviewers and technical judges**: expandable sections with the written summary, every step the app ran, the raw records and the raw response
    * **Download evidence (JSON)**: saves the full record so anyone can check it later
 
 (Optional) Under the cards, **Or type your own question** lets you ask something else.
 
-**What you should see** (live results checked on November 2, 2026; FEMA updates its data daily, so numbers can change):
+**What you should see** (live results checked on November 2, 2026, and on November 3 for the listed-twice card; FEMA updates its data daily, so numbers can change):
 
 | Card | Headline |
 |---|---|
 | Expensive road and bridge projects | 3 of 179 projects cost far more than similar projects. The largest is about 25 times the average. |
 | Expensive utility repairs | 3 of 115 utility projects cost far more than similar projects. The largest is about $149.6 million, about 31 times the $4.8 million average. |
-| Listed twice | 74 groups of near-identical project titles found in 3,964 records checked, for example "Naples Access to Beach - 1" to "- 7". |
+| Listed twice | 86 groups of near-identical project titles found in 3,099 records checked. The closest match is listed first: "Div 13 Yancey" and "DIV 13 - Yancey", two large road-repair worksheets from the same applicant ($1.38 million and $1.64 million estimated), whose titles differ only in capitals and a dash. |
 
-**What to notice.** Every number on the page comes from the check results, and the raw records are one click away. The page keeps "records checked", "flagged" and "shown" separate, so a short example list is never mistaken for the full count. It says what a flag does not prove. For repeated worksheets, titles are compared after ignoring capitals, punctuation and numbers, and each group lists its original titles and worksheet numbers. Many numbered series are legitimate (separate buildings, sites or phases), and the page says so.
+**What to notice.** Every number on the page comes from the check results, and the raw records are one click away. The page keeps "records checked", "flagged" and "shown" separate, so a short example list is never mistaken for the full count. It says what a flag does not prove. For repeated worksheets, titles are compared after ignoring capitals, punctuation and numbers, and each group can be opened to compare its worksheets side by side, with what they share, what differs, and each worksheet's cost. A close match is a reason to compare the worksheets, not proof of double billing. Many numbered series are legitimate (separate buildings, sites or phases), and the page says so.
 
 ### About the live app version
 
@@ -60,6 +61,8 @@ On November 2, 2026 we made two changes:
 Because the rule is code, the code fingerprint changed, so we re-ran every check on the new code. Later on November 2 we also shortened the data caveat text and added each project's name to the "unusually expensive project" chart. Neither change affects which projects are flagged or how many. We then re-ran every check on the final code. The recorded run (`20261102T152007Z`, code fingerprint `9cdad51e...`) passed all of them: 71/71 automated tests, lint, the independent calculations (238 = 238 cost-share flags; 74 = 74 repeated groups; 3 = 3 road projects), the AI tool-choice (15/15) and workflow tests (3/3 and 3/3), and the with/without-tools comparison (15/15 vs 0/15). The earlier November 2 run (`20261102T120900Z`, fingerprint `936a4788...`) gave the same results and is kept in the zip for reference.
 
 The October 29 zip in this folder, its fingerprint (`f70d0a80...`) and its recorded run describe the October 29 code. The updated packet, `FEMA_Hackathon_Submission_2026-11-02.zip`, holds the new code, the new recorded run, the updated deck and video, and updated judge documents (see `docs/NOVEMBER_2_UPDATE.md` inside it). It is stored in the volume `/Volumes/users/phebe_arouni/hackathon_submissions/20261102/`. One check was not repeated: the hosted-app sign-in smoke test, because the app's sign-in redirect could not be completed from a notebook; the October 29 smoke record remains.
+
+**November 3, 2026 update (live app only).** To make the listed-twice result easier to judge, we added the side-by-side view described above, labelled each group by how closely its titles match, listed the closest matches first, and moved the card to North Carolina disaster 4827, where the closest matches are clearer than in Florida 4673. The rule that decides which worksheets are grouped did not change: Florida 4673 still gives 74 groups and North Carolina 4827 gives 86. This changed the app's code, so the live app is now newer than the November 2 zip and its code fingerprint no longer matches the recorded run. We checked the new code with the 71 automated tests and the lint check (all passed), compared one group's worksheets with FEMA's records directly (they matched) and ran the card's question through the app. We did not repeat the full recorded run. The zip, its fingerprint and its recorded run are unchanged.
 
 If the app page does not open for you, use the notebook below. It shows the same check results and needs no login.
 
