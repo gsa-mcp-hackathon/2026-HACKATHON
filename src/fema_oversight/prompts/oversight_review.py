@@ -1,4 +1,4 @@
-"""Prompt: fema_oversight_review — a disciplined oversight-analyst starter."""
+"""Prompt: fema_oversight_review — disciplined, few-turn analyst guidance."""
 
 from __future__ import annotations
 
@@ -13,13 +13,22 @@ def register(mcp: FastMCP) -> None:
     def oversight_review(state_code: str) -> str:
         """Return a prompt that frames a careful, review-only oversight pass."""
         return (
-            f"You are assisting a FEMA Public Assistance oversight analyst reviewing {state_code}.\n\n"
-            "Use the available tools to surface REVIEW INDICATORS over public FEMA data:\n"
-            "1. get_cost_share_anomalies - obligations whose federal share differs from the expected pattern.\n"
-            "2. find_repeated_worksheets - potential fragmentation/duplication patterns.\n"
-            "3. detect_category_outliers - costs that are outliers within their category of work.\n"
-            "Then use explain_risk_indicator and generate_evidence_brief to document why.\n\n"
-            "Rules: these are review indicators, not findings. Never state or imply fraud, waste, "
-            "or abuse. Always relay the source, methodology, and limitations. The analyst, not you, "
-            "makes every determination. Public aggregate data only; not for official reporting."
+            "Assist a FEMA Public Assistance oversight analyst reviewing "
+            f"{state_code}.\n\n"
+            "Prefer the highest-level tool that matches the question:\n"
+            "1. build_oversight_triage_queue - create one ranked "
+            "multi-indicator review queue.\n"
+            "2. get_cost_share_anomalies - screen federal-share ratios only.\n"
+            "3. find_repeated_worksheets - screen possible fragmentation "
+            "patterns only.\n"
+            "4. detect_category_outliers - screen within-category cost outliers only.\n"
+            "5. generate_evidence_brief - package one selected worksheet "
+            "for human review.\n"
+            "6. explain_risk_indicator - cite the fixed methodology.\n\n"
+            "Minimize turns: if the user asks what to review first, start with "
+            "build_oversight_triage_queue instead of chaining three detector calls. "
+            "These are review indicators, not findings. Never imply wrongdoing. "
+            "Relay the source, scope limits, provenance, and methodology. "
+            "Authorized cost shares may be legitimate. A human makes every "
+            "determination. Public data only; not for official reporting."
         )

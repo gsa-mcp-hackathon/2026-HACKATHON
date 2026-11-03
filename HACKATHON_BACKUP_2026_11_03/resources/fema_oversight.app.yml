@@ -1,0 +1,16 @@
+# FEMA Evidence & Oversight app (was app "2026h", deployed from
+# hackathon_releases/20261102). src/app is a byte-for-byte copy of that release.
+resources:
+  apps:
+    fema_oversight_app:
+      name: ${var.app_name}
+      description: FEMA Disaster Spending Check - FEMA Oversight MCP server + AI analyst UI (hackathon submission)
+      source_code_path: ../src/app
+      # The AI analyst calls this serving endpoint (FEMA_AGENT_MODEL default).
+      # Declaring it grants the app service principal CAN_QUERY.
+      resources:
+        - name: analyst-model
+          description: LLM used by the AI analyst
+          serving_endpoint:
+            name: ${var.model_endpoint}
+            permission: CAN_QUERY

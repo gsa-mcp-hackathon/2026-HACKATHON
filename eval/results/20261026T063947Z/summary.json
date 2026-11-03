@@ -1,0 +1,101 @@
+{
+  "started_at": "20261026T063947Z",
+  "python": "3.12.3",
+  "execution_host": "Databricks",
+  "checks": [
+    {
+      "name": "pytest",
+      "pass": true,
+      "exit_code": 0
+    },
+    {
+      "name": "ruff",
+      "pass": true
+    },
+    {
+      "name": "cost_share_sqlite_control",
+      "pass": true,
+      "snapshot_rows": 238,
+      "tool_count": 238,
+      "control_count": 238,
+      "record_cap": 5000,
+      "possibly_truncated": false
+    },
+    {
+      "name": "repeated_sqlite_control",
+      "pass": true,
+      "snapshot_rows": 3956,
+      "tool_count": 0,
+      "control_count": 0,
+      "record_cap": 10000,
+      "possibly_truncated": false
+    },
+    {
+      "name": "category_sqlite_control",
+      "pass": true,
+      "snapshot_rows": 179,
+      "tool_count": 3,
+      "control_count": 3,
+      "record_cap": 10000,
+      "possibly_truncated": false
+    },
+    {
+      "name": "get_cost_share_anomalies_live",
+      "pass": true,
+      "latencies_seconds": [
+        0.8864368580000246,
+        0.3629366839999193,
+        0.3512022729998989
+      ]
+    },
+    {
+      "name": "find_repeated_worksheets_live",
+      "pass": true,
+      "latencies_seconds": [
+        1.3006700939999973,
+        0.40286464300004354,
+        0.3896419600000627
+      ]
+    },
+    {
+      "name": "detect_category_outliers_live",
+      "pass": true,
+      "latencies_seconds": [
+        0.6950961869999901,
+        0.36611285599997245,
+        0.35749887800000124
+      ]
+    },
+    {
+      "name": "explanation_schema",
+      "pass": true
+    },
+    {
+      "name": "evidence_identity",
+      "pass": true
+    }
+  ],
+  "metrics": {
+    "pytest_cases": 49,
+    "pytest_passed": 49,
+    "get_cost_share_anomalies_median_seconds": 0.3629366839999193,
+    "find_repeated_worksheets_median_seconds": 0.40286464300004354,
+    "detect_category_outliers_median_seconds": 0.36611285599997245,
+    "tool_selection_correct": 15,
+    "tool_selection_cases": 15,
+    "completed_agent_workflows": 3,
+    "agent_workflow_cases": 3
+  },
+  "tools": [
+    "get_cost_share_anomalies",
+    "find_repeated_worksheets",
+    "detect_category_outliers",
+    "explain_risk_indicator",
+    "generate_evidence_brief"
+  ],
+  "completed_at": "2026-10-26T06:40:46.736132+00:00",
+  "all_functional_checks_pass": true,
+  "source_sha256": "0c3f6f2b321266d641eadb115154e9544cda54b25cb42ef71dfe3f6323700e53",
+  "mlflow_run_id": "fd70fd03d8a14e818053724cbb9fd170",
+  "mlflow_experiment_id": "1305734463288268"
+}

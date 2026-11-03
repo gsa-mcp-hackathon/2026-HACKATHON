@@ -1,24 +1,69 @@
-"""Tool: generate_evidence_brief — package one flagged project for human review."""
+"""Tool: generate_evidence_brief — package one flagged project for human review.
+
+This is the "drill-down" step of the oversight workflow. A screening or triage
+tool tells the analyst *which* worksheet to look at; this tool assembles the
+authoritative source rows, the matching methodology card and the provenance an
+analyst needs to write a case note, all in one call.
+"""
 
 from __future__ import annotations
 
-from typing import Annotated, Any
+from typing import Any
 
 from fastmcp import FastMCP
 
-from fema_oversight.models import INDICATOR_METHODOLOGY, IndicatorType, REVIEW_CAVEAT
+from fema_oversight.clients import PAFetchResult, openfema_client
+from fema_oversight.methodology import INDICATOR_METHODOLOGY, REVIEW_CAVEAT
+from fema_oversight.models import (
+    ApplicantIdArg,
+    DisasterNumberArg,
+    EvidenceBriefRequest,
+    IndicatorArg,
+    PwNumberArg,
+)
+from fema_oversight.security import sanitize_text
 from fema_oversight.utils import (
-    UpstreamServiceError,
     fetch_pa_records,
-    provenance_block,
+    fetch_pa_records_with_meta,
+    odata_quote,
+    provenance_block_from_result,
     to_float,
 )
 
 _SELECT = [
-    "pwNumber", "applicantId", "stateAbbreviation", "county", "disasterNumber",
-    "applicationTitle", "damageCategoryCode", "damageCategoryDescrip",
-    "projectAmount", "totalObligated", "federalShareObligated", "declarationDate",
+    "pwNumber",
+    "applicantId",
+    "stateAbbreviation",
+    "county",
+    "disasterNumber",
+    "applicationTitle",
+    "damageCategoryCode",
+    "damageCategoryDescrip",
+    "projectAmount",
+    "totalObligated",
+    "federalShareObligated",
+    "declarationDate",
 ]
+
+
+# One worksheet identity rarely has more than a handful of versions; 50 rows is
+# a generous ceiling that still keeps the brief small enough for an LLM context.
+_BRIEF_ROW_CAP = 50
+
+
+async def _get_records(flt: str) -> PAFetchResult:
+    # Test seam: see triage_queue._get_records for why this check exists.
+    if getattr(fetch_pa_records, "__module__", "") != "fema_oversight.utils":
+        rows = await fetch_pa_records(
+            odata_filter=flt, select=_SELECT, top=_BRIEF_ROW_CAP
+        )
+        return PAFetchResult(records=rows, total_matches=None, retrieved_at="")
+    return await fetch_pa_records_with_meta(
+        odata_filter=flt,
+        select=_SELECT,
+        top=_BRIEF_ROW_CAP,
+        include_count=False,
+    )
 
 
 def register(mcp: FastMCP) -> None:
@@ -33,64 +78,105 @@ def register(mcp: FastMCP) -> None:
         },
     )
     async def generate_evidence_brief(
-        pw_number: Annotated[int, "Project Worksheet number to brief."],
-        indicator: Annotated[
-            IndicatorType,
-            "Which indicator triggered the review: cost_share_anomaly, repeated_worksheet, or category_outlier.",
-        ],
+        pw_number: PwNumberArg,
+        indicator: IndicatorArg,
+        disaster_number: DisasterNumberArg = 0,
+        applicant_id: ApplicantIdArg = "",
     ) -> dict[str, Any]:
-        """Compose an analyst-facing evidence brief for one flagged Project
-        Worksheet: the source records, the rationale and methodology, the
-        limitations, and the review caveats. This is the artifact a human
-        reviews; it adds no conclusion the data does not support.
+        """Assemble the evidence packet a human reviewer needs for ONE Project
+        Worksheet (PW) that a screening or triage tool already surfaced.
 
-        Source: OpenFEMA Public Assistance Funded Projects Details (v2), daily.
+        USE WHEN the analyst says "tell me more about PW 169", "brief this
+        project", or picks an item from build_oversight_triage_queue or a
+        detector. Copy pw_number, disaster_number and applicant_id from that
+        result; do not invent PW numbers.
+
+        DO NOT USE to discover projects (use build_oversight_triage_queue) or
+        to explain a method in general (use explain_risk_indicator).
+
+        AUTHORITATIVE SOURCE: FEMA OpenFEMA Public Assistance Funded Projects
+        Details v2 (public, read-only, refreshed daily).
+
+        HOW TO READ THE OUTPUT: source_records are the verbatim public rows
+        (dollar fields as reported); methodology and limitations come from the
+        fixed card for the chosen indicator; _provenance cites the dataset and
+        retrieval time. The brief does NOT re-run the screening threshold.
+
+        RECOVERABLE ERRORS: "matches multiple projects" means retry with
+        disaster_number AND applicant_id; "not found" means re-check the PW
+        number against the screening result.
         """
-        if pw_number <= 0:
-            return {"error": "pw_number must be positive.", "hint": "Pass a real Project Worksheet number."}
-        card = INDICATOR_METHODOLOGY.get(indicator.value)
-        if not card:
-            return {"error": f"Unknown indicator '{indicator}'.",
-                    "hint": "Use cost_share_anomaly, repeated_worksheet, or category_outlier."}
-        try:
-            records = await fetch_pa_records(
-                odata_filter=f"pwNumber eq {int(pw_number)}", select=_SELECT, top=50
+        request = EvidenceBriefRequest(
+            pw_number=pw_number,
+            indicator=indicator,
+            disaster_number=disaster_number,
+            applicant_id=applicant_id,
+        )
+        card = INDICATOR_METHODOLOGY[request.indicator]
+        clauses = [f"pwNumber eq {int(request.pw_number)}"]
+        if request.disaster_number:
+            clauses.append(f"disasterNumber eq {int(request.disaster_number)}")
+        if request.applicant_id:
+            clauses.append(f"applicantId eq '{odata_quote(request.applicant_id)}'")
+        result = await _get_records(" and ".join(clauses))
+        if not result.records:
+            raise ValueError(
+                f"No public worksheet {request.pw_number} found. Confirm the PW "
+                "number from a detection tool result."
             )
-        except UpstreamServiceError as exc:
-            return {"error": str(exc), "hint": "Retry; if it persists the dataset may be refreshing."}
-        if not records:
-            return {"error": f"No Project Worksheet {pw_number} found in the public dataset.",
-                    "hint": "Confirm the PW number from a detection tool result."}
+
+        identities = {
+            (r.get("disasterNumber"), r.get("applicantId")) for r in result.records
+        }
+        if len(identities) > 1:
+            raise ValueError(
+                "Worksheet number matches multiple projects. Supply disaster_number "
+                "and applicant_id from the detection result."
+            )
+        source_last_updated = await openfema_client.get_dataset_last_updated()
 
         source_records = []
-        for r in records:
-            source_records.append({
-                "pw_number": r.get("pwNumber"),
-                "applicant_id": r.get("applicantId"),
-                "state": r.get("stateAbbreviation"),
-                "county": r.get("county"),
-                "disaster_number": r.get("disasterNumber"),
-                "application_title": r.get("applicationTitle"),
-                "damage_category": r.get("damageCategoryDescrip"),
-                "project_amount": to_float(r.get("projectAmount")),
-                "total_obligated": to_float(r.get("totalObligated")),
-                "federal_share_obligated": to_float(r.get("federalShareObligated")),
-                "declaration_date": r.get("declarationDate"),
-            })
+        for r in result.records:
+            source_records.append(
+                {
+                    "pw_number": r.get("pwNumber"),
+                    "applicant_id": sanitize_text(r.get("applicantId")),
+                    "state": sanitize_text(r.get("stateAbbreviation")),
+                    "county": sanitize_text(r.get("county")),
+                    "disaster_number": r.get("disasterNumber"),
+                    "application_title": sanitize_text(r.get("applicationTitle")),
+                    "damage_category": sanitize_text(r.get("damageCategoryDescrip")),
+                    "project_amount": to_float(r.get("projectAmount")),
+                    "total_obligated": to_float(r.get("totalObligated")),
+                    "federal_share_obligated": to_float(r.get("federalShareObligated")),
+                    "declaration_date": sanitize_text(r.get("declarationDate")),
+                }
+            )
 
         return {
-            "pw_number": pw_number,
-            "indicator": indicator.value,
+            "pw_number": request.pw_number,
+            "indicator": request.indicator,
             "indicator_name": card["name"],
             "source_records": source_records,
             "rationale": (
-                f"This Project Worksheet was surfaced by the {card['name']} "
-                "review indicator. An analyst should review the source records "
-                "below against program context before drawing any conclusion."
+                f"This Project Worksheet was submitted for {card['name']} review. "
+                "This brief does not independently verify that the indicator "
+                "threshold was met. Review the source records below against "
+                "program context before drawing any conclusion."
             ),
             "methodology": card["methodology"],
             "limitations": card["limitations"],
             "review_status": "Not a finding. Analyst review required.",
             "caveat": REVIEW_CAVEAT,
-            "_provenance": provenance_block(card["methodology"]),
+            "_provenance": provenance_block_from_result(
+                card["methodology"],
+                retrieval_timestamp=result.retrieved_at,
+                source_last_updated=source_last_updated,
+                limitations_suffix=(
+                    " Evidence briefs fetch at most 50 matching source rows for one "
+                    "worksheet identity. The brief packages source records and the "
+                    "selected methodology; it does not independently rerun the "
+                    "screening threshold."
+                ),
+            ),
         }

@@ -1,0 +1,8 @@
+resources:
+  dashboards:
+    fema_pa_funding_overview:
+      display_name: FEMA Public Assistance Funding Overview
+      file_path: ../src/dashboards/fema_pa_funding_overview.lvdash.json
+      warehouse_id: ${var.warehouse_id}
+      dataset_catalog: ${var.catalog}
+      dataset_schema: ${var.schema}

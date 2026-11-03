@@ -6,6 +6,7 @@ from fema_oversight.tools import (
     evidence_brief,
     explain_indicator,
     repeated_worksheets,
+    triage_queue,
 )
 
 
@@ -17,3 +18,5 @@ def register_tools(mcp) -> None:
     # Explainability layer
     explain_indicator.register(mcp)
     evidence_brief.register(mcp)
+    # Analyst workflow layer
+    triage_queue.register(mcp)

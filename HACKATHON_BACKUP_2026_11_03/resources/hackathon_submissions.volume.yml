@@ -1,0 +1,10 @@
+# Replaces /Volumes/users/phebe_arouni/hackathon_submissions. Files are copied
+# in by the restore_hackathon_data job from ../migration_data/volume_files.
+resources:
+  volumes:
+    hackathon_submissions:
+      catalog_name: ${var.catalog}
+      schema_name: ${var.schema}
+      name: hackathon_submissions
+      volume_type: MANAGED
+      comment: FEMA hackathon submission packet (zip, deck, judge brief, video)

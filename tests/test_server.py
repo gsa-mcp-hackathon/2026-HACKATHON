@@ -1,7 +1,8 @@
 """Smoke tests for the FEMA Evidence & Oversight Graph MCP server.
 
-Verify the server imports and every submodule registers, and that all five
-oversight tools are discoverable.
+Verify the server imports and every submodule registers, that all six
+oversight tools are discoverable, and that every published tool schema is
+self-describing enough for an LLM to parameterize without guessing.
 """
 
 from __future__ import annotations
@@ -18,6 +19,7 @@ EXPECTED_TOOLS = {
     "detect_category_outliers",
     "explain_risk_indicator",
     "generate_evidence_brief",
+    "build_oversight_triage_queue",
 }
 
 
@@ -58,10 +60,66 @@ def test_routes_register_without_error():
 
 
 @pytest.mark.asyncio
-async def test_all_five_tools_discoverable():
+async def test_all_tools_discoverable():
     tools = await mcp.list_tools()
     names = {t.name for t in tools}
-    assert EXPECTED_TOOLS <= names, f"missing: {EXPECTED_TOOLS - names}"
+    assert names == EXPECTED_TOOLS, f"diff: {names ^ EXPECTED_TOOLS}"
+
+
+@pytest.mark.asyncio
+async def test_every_tool_parameter_is_described_for_the_llm():
+    """Regression guard: a bare ``x: str`` signature publishes an empty schema.
+
+    FastMCP derives the schema from the function signature, so a tool can pass
+    every behavioural test while still giving the model no description, bounds
+    or examples. This test fails if any parameter loses its description.
+    """
+    from fastmcp import Client
+
+    async with Client(mcp) as client:
+        tools = await client.list_tools()
+    undocumented = [
+        f"{tool.name}.{param}"
+        for tool in tools
+        for param, spec in tool.input_schema.get("properties", {}).items()
+        if not spec.get("description")
+    ]
+    assert not undocumented, f"parameters without descriptions: {undocumented}"
+
+
+@pytest.mark.asyncio
+async def test_global_rate_limit_holds_when_session_ids_rotate(monkeypatch):
+    """Regression: the in-memory transport mints a new session id per call,
+    so a per-session bucket alone never filled up. The process-wide ceiling
+    must still refuse the call that exceeds it."""
+    from fastmcp import Client
+
+    from fema_oversight.middleware import StructuredErrorsAndRateLimit
+
+    limiter = next(
+        m for m in mcp.middleware if isinstance(m, StructuredErrorsAndRateLimit)
+    )
+    limiter._buckets.clear()
+    monkeypatch.setattr(settings, "rate_limit_global_calls_per_minute", 3)
+    args = {"indicator": "category_outlier"}
+    try:
+        async with Client(mcp) as client:
+            for _ in range(3):
+                ok = await client.call_tool("explain_risk_indicator", args)
+                assert "error" not in ok.data
+            refused = await client.call_tool("explain_risk_indicator", args)
+    finally:
+        limiter._buckets.clear()
+    assert refused.data["error_code"] == "rate_limit_exceeded"
+    assert refused.data["retryable"] is True
+
+
+@pytest.mark.asyncio
+async def test_every_tool_is_annotated_read_only():
+    tools = await mcp.list_tools()
+    for tool in tools:
+        assert tool.annotations.read_only_hint is True, tool.name
+        assert tool.annotations.destructive_hint is False, tool.name
 
 
 @pytest.mark.asyncio

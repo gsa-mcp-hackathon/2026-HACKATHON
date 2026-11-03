@@ -12,10 +12,12 @@ import os
 from fastmcp import FastMCP
 
 from fema_oversight.config import settings
+from fema_oversight.middleware import StructuredErrorsAndRateLimit
 from fema_oversight.prompts import register_prompts
 from fema_oversight.resources import register_resources
 from fema_oversight.routes import register_routes
 from fema_oversight.tools import register_tools
+from fema_oversight.web import register_web
 
 mcp = FastMCP(
     name="FEMA Evidence & Oversight Graph",
@@ -23,14 +25,20 @@ mcp = FastMCP(
         "Transforms open FEMA Public Assistance data into traceable, explainable, "
         "analyst-ready oversight intelligence. Tools return REVIEW INDICATORS on "
         "public aggregate data, never findings; a human analyst makes every "
-        "determination. Not for official reporting."
+        "determination. Not for official reporting. Prefer the highest-level tool "
+        "that matches the task: build_oversight_triage_queue for prioritized "
+        "review queues, detector tools for one indicator family, "
+        "generate_evidence_brief for a single worksheet, and "
+        "explain_risk_indicator for auditable methodology."
     ),
 )
+mcp.add_middleware(StructuredErrorsAndRateLimit())
 
 register_tools(mcp)
 register_prompts(mcp)
 register_resources(mcp)
 register_routes(mcp)
+register_web(mcp)
 
 
 def main() -> None:
@@ -39,7 +47,9 @@ def main() -> None:
     if platform_port:
         mcp.run(transport="http", host="0.0.0.0", port=int(platform_port))
     elif settings.mcp_transport == "streamable-http":
-        mcp.run(transport="streamable-http", host=settings.mcp_host, port=settings.mcp_port)
+        mcp.run(
+            transport="streamable-http", host=settings.mcp_host, port=settings.mcp_port
+        )
     else:
         mcp.run()
 

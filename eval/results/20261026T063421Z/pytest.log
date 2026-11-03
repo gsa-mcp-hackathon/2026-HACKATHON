@@ -1,0 +1,89 @@
+
+==================================== ERRORS ====================================
+[31m[1m_______________ ERROR collecting tests/test_evidence_identity.py _______________[0m
+[1m[31m/usr/lib/python3.12/importlib/__init__.py[0m:90: in import_module
+    [0m[94mreturn[39;49;00m _bootstrap._gcd_import(name[level:], package, level)[90m[39;49;00m
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[90m[39;49;00m
+[1m[31m<frozen importlib._bootstrap>[0m:1387: in _gcd_import
+    [0m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[90m[39;49;00m
+[1m[31m<frozen importlib._bootstrap>[0m:1360: in _find_and_load
+    [0m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[90m[39;49;00m
+[1m[31m<frozen importlib._bootstrap>[0m:1331: in _find_and_load_unlocked
+    [0m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[90m[39;49;00m
+[1m[31m<frozen importlib._bootstrap>[0m:935: in _load_unlocked
+    [0m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[90m[39;49;00m
+[1m[31m/local_disk0/.ephemeral_nfs/envs/pythonEnv-fa7b1842-9a5f-4866-bc57-ab6e0fc91038/lib/python3.12/site-packages/_pytest/assertion/rewrite.py[0m:167: in exec_module
+    [0mok = try_makedirs(cache_dir)[90m[39;49;00m
+         ^^^^^^^^^^^^^^^^^^^^^^^[90m[39;49;00m
+[1m[31m/local_disk0/.ephemeral_nfs/envs/pythonEnv-fa7b1842-9a5f-4866-bc57-ab6e0fc91038/lib/python3.12/site-packages/_pytest/assertion/rewrite.py[0m:1163: in try_makedirs
+    [0mos.makedirs(cache_dir, exist_ok=[94mTrue[39;49;00m)[90m[39;49;00m
+[1m[31m<frozen os>[0m:225: in makedirs
+    [0m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[90m[39;49;00m
+[1m[31mE   OSError: [Errno 95] Operation not supported: '/Workspace/Users/phebe.arouni@hq.dhs.gov/2026-HACKATHON/tests/__pycache__'[0m
+[31m[1m_________________ ERROR collecting tests/test_http_security.py _________________[0m
+[1m[31m/usr/lib/python3.12/importlib/__init__.py[0m:90: in import_module
+    [0m[94mreturn[39;49;00m _bootstrap._gcd_import(name[level:], package, level)[90m[39;49;00m
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[90m[39;49;00m
+[1m[31m<frozen importlib._bootstrap>[0m:1387: in _gcd_import
+    [0m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[90m[39;49;00m
+[1m[31m<frozen importlib._bootstrap>[0m:1360: in _find_and_load
+    [0m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[90m[39;49;00m
+[1m[31m<frozen importlib._bootstrap>[0m:1331: in _find_and_load_unlocked
+    [0m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[90m[39;49;00m
+[1m[31m<frozen importlib._bootstrap>[0m:935: in _load_unlocked
+    [0m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[90m[39;49;00m
+[1m[31m/local_disk0/.ephemeral_nfs/envs/pythonEnv-fa7b1842-9a5f-4866-bc57-ab6e0fc91038/lib/python3.12/site-packages/_pytest/assertion/rewrite.py[0m:167: in exec_module
+    [0mok = try_makedirs(cache_dir)[90m[39;49;00m
+         ^^^^^^^^^^^^^^^^^^^^^^^[90m[39;49;00m
+[1m[31m/local_disk0/.ephemeral_nfs/envs/pythonEnv-fa7b1842-9a5f-4866-bc57-ab6e0fc91038/lib/python3.12/site-packages/_pytest/assertion/rewrite.py[0m:1163: in try_makedirs
+    [0mos.makedirs(cache_dir, exist_ok=[94mTrue[39;49;00m)[90m[39;49;00m
+[1m[31m<frozen os>[0m:225: in makedirs
+    [0m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[90m[39;49;00m
+[1m[31mE   OSError: [Errno 95] Operation not supported: '/Workspace/Users/phebe.arouni@hq.dhs.gov/2026-HACKATHON/tests/__pycache__'[0m
+[31m[1m_________________ ERROR collecting tests/test_review_rules.py __________________[0m
+[1m[31m/usr/lib/python3.12/importlib/__init__.py[0m:90: in import_module
+    [0m[94mreturn[39;49;00m _bootstrap._gcd_import(name[level:], package, level)[90m[39;49;00m
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[90m[39;49;00m
+[1m[31m<frozen importlib._bootstrap>[0m:1387: in _gcd_import
+    [0m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[90m[39;49;00m
+[1m[31m<frozen importlib._bootstrap>[0m:1360: in _find_and_load
+    [0m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[90m[39;49;00m
+[1m[31m<frozen importlib._bootstrap>[0m:1331: in _find_and_load_unlocked
+    [0m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[90m[39;49;00m
+[1m[31m<frozen importlib._bootstrap>[0m:935: in _load_unlocked
+    [0m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[90m[39;49;00m
+[1m[31m/local_disk0/.ephemeral_nfs/envs/pythonEnv-fa7b1842-9a5f-4866-bc57-ab6e0fc91038/lib/python3.12/site-packages/_pytest/assertion/rewrite.py[0m:167: in exec_module
+    [0mok = try_makedirs(cache_dir)[90m[39;49;00m
+         ^^^^^^^^^^^^^^^^^^^^^^^[90m[39;49;00m
+[1m[31m/local_disk0/.ephemeral_nfs/envs/pythonEnv-fa7b1842-9a5f-4866-bc57-ab6e0fc91038/lib/python3.12/site-packages/_pytest/assertion/rewrite.py[0m:1163: in try_makedirs
+    [0mos.makedirs(cache_dir, exist_ok=[94mTrue[39;49;00m)[90m[39;49;00m
+[1m[31m<frozen os>[0m:225: in makedirs
+    [0m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[90m[39;49;00m
+[1m[31mE   OSError: [Errno 95] Operation not supported: '/Workspace/Users/phebe.arouni@hq.dhs.gov/2026-HACKATHON/tests/__pycache__'[0m
+[31m[1m____________________ ERROR collecting tests/test_server.py _____________________[0m
+[1m[31m/usr/lib/python3.12/importlib/__init__.py[0m:90: in import_module
+    [0m[94mreturn[39;49;00m _bootstrap._gcd_import(name[level:], package, level)[90m[39;49;00m
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[90m[39;49;00m
+[1m[31m<frozen importlib._bootstrap>[0m:1387: in _gcd_import
+    [0m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[90m[39;49;00m
+[1m[31m<frozen importlib._bootstrap>[0m:1360: in _find_and_load
+    [0m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[90m[39;49;00m
+[1m[31m<frozen importlib._bootstrap>[0m:1331: in _find_and_load_unlocked
+    [0m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[90m[39;49;00m
+[1m[31m<frozen importlib._bootstrap>[0m:935: in _load_unlocked
+    [0m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[90m[39;49;00m
+[1m[31m/local_disk0/.ephemeral_nfs/envs/pythonEnv-fa7b1842-9a5f-4866-bc57-ab6e0fc91038/lib/python3.12/site-packages/_pytest/assertion/rewrite.py[0m:167: in exec_module
+    [0mok = try_makedirs(cache_dir)[90m[39;49;00m
+         ^^^^^^^^^^^^^^^^^^^^^^^[90m[39;49;00m
+[1m[31m/local_disk0/.ephemeral_nfs/envs/pythonEnv-fa7b1842-9a5f-4866-bc57-ab6e0fc91038/lib/python3.12/site-packages/_pytest/assertion/rewrite.py[0m:1163: in try_makedirs
+    [0mos.makedirs(cache_dir, exist_ok=[94mTrue[39;49;00m)[90m[39;49;00m
+[1m[31m<frozen os>[0m:225: in makedirs
+    [0m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[04m[91m?[39;49;00m[90m[39;49;00m
+[1m[31mE   OSError: [Errno 95] Operation not supported: '/Workspace/Users/phebe.arouni@hq.dhs.gov/2026-HACKATHON/tests/__pycache__'[0m
+[36m[1m=========================== short test summary info ============================[0m
+[31mERROR[0m tests/test_evidence_identity.py - OSError: [Errno 95] Operation not supported: '/Workspace/Users/phebe.arouni...
+[31mERROR[0m tests/test_http_security.py - OSError: [Errno 95] Operation not supported: '/Workspace/Users/phebe.arouni...
+[31mERROR[0m tests/test_review_rules.py - OSError: [Errno 95] Operation not supported: '/Workspace/Users/phebe.arouni...
+[31mERROR[0m tests/test_server.py - OSError: [Errno 95] Operation not supported: '/Workspace/Users/phebe.arouni...
+!!!!!!!!!!!!!!!!!!! Interrupted: 4 errors during collection !!!!!!!!!!!!!!!!!!!!
+[31m[31m[1m4 errors[0m[31m in 0.67s[0m[0m
