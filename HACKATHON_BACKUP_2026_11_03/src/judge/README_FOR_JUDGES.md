@@ -146,4 +146,4 @@ The notebook shows the checks for the scenarios the app features. The full recor
 
 * App (open in a browser): https://2026h-7474654188777746.aws.databricksapps.com (AI tool endpoint at `/mcp`)
 * Validation job: `67919837469456`. MLflow experiment `1305734463288268`, recorded run `20261102T152007Z` = MLflow run `ff6c41f62dc04e2c929fea1e08ba3e21` (earlier November 2 run: `23ad3105a83e472da58224d902de53ea`; October 29: `7445e452abfc4cd89896658d4ab7f44a`)
-* Public repository: https://github.com/phebeong/2026-HACKATHON (October 29 submission commit `f21fe97`; the November 4 final submission package is not yet pushed)
+* Public repository: https://github.com/phebeong/2026-HACKATHON (October 29 submission commit `f21fe97`; the November 4 final submission package is on `main` at `SUBMISSION_FINAL/FINAL_SUBMISSION_PACKAGE.md`)
