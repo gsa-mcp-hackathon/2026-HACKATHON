@@ -1,24 +1,27 @@
 # FEMA Evidence & Oversight Graph: Read This First
 
-Phebe Arouni & Tom Jacobson | Dataset Access track | Submission of October 29, 2026 | App page and repeat rule updated November 2, 2026; repeat example and side-by-side view updated November 3, 2026 (see "About the live app version")
+**Trusted oversight infrastructure for AI agents using evidence-backed review recommendations.**
+
+Phebe Arouni & Tom Jacobson | Dataset Access track | Submission of October 29, 2026 | App page and repeat rule updated November 2, 2026; repeat example and side-by-side view updated November 3, 2026; this page updated November 4, 2026 to match the final submission package (see "What changed and when")
 
 You do not need any technical knowledge to judge this entry. Read the next part (1 minute), then try the app (2 minutes).
 
 ## In plain English (1 minute)
 
-**The problem.** After a hurricane or flood, FEMA pays billions of dollars to rebuild roads, schools, and other public buildings. FEMA publishes these projects online as hundreds of thousands of records. An oversight reviewer (an auditor, an inspector general, a congressional staffer) cannot read them all. They need to know which projects deserve a second look and why.
+**The problem.** After a hurricane or flood, FEMA's Public Assistance program obligates billions of dollars to repair roads, utilities, schools and other public facilities. FEMA publishes these projects on OpenFEMA as hundreds of thousands of records. An oversight reviewer (a FEMA analyst, an Inspector General auditor, a congressional staffer) cannot read them all. They need to know which projects to review first, and why.
 
-**The risk with AI.** You could ask a chatbot. But chatbots often make up numbers, and they cannot show where an answer came from. In government oversight, an answer you cannot check is useless.
+**The trust gap.** An AI model without access to the data cannot answer exact questions about these records. When it narrates on its own, it can add statements the data does not support. We measured both. In oversight, an answer you cannot trace back to a federal record cannot be used.
 
-**What we built.** An assistant that **does not guess**. You ask a question in plain English. Behind the scenes, the AI does not answer from memory. It uses five checking tools that pull the **real, live FEMA records** and run simple, published rules on them. Every answer shows:
+**What we built.** Trusted oversight infrastructure for AI agents. You ask a question in plain English. The AI has one job: choosing which of five read-only tools to use. The tools pull **live FEMA records**, apply a **published rule**, and do **all the math**. The answer you see is built from the tools' results, not written freely by the AI. Every answer shows:
 
-* **What was found**, with the exact FEMA project records it came from
+* **What was returned for review**, with the exact FEMA project records it came from
 * **How it was calculated**, in plain terms
-* **What it does NOT prove** (a flag is a reason to look, not proof of fraud)
+* **What it does not tell you** (a review indicator is a reason to look, not a conclusion)
+* **Where the data came from and when it was retrieved**
 
-A person always makes the final decision. The tool only reads data. It cannot change, approve, or deny anything.
+**AI points. Evidence proves. People decide.** The tools only read data. They cannot change, approve, or deny anything. A person makes every determination.
 
-**The proof it works.** When we asked the same 10 questions with and without our tools, the AI got the exact numbers right **10 out of 10 times with our tools, and 0 out of 10 without them**. Every count our tools produce was checked against a separate calculation and matched exactly.
+**The proof.** On the questions shown in the walkthrough notebook, the AI got the exact counts right **10 out of 10 times with our tools, and 0 out of 10 without them**. Every count our tools produce was checked against a separate calculation and matched exactly. On November 4, 2026 we re-ran the Hurricane Ida example against live FEMA data, and a separate direct query returned the same three projects.
 
 ## Try the app yourself (2 minutes)
 
@@ -41,7 +44,7 @@ A person always makes the final decision. The tool only reads data. It cannot ch
 
 (Optional) Under the cards, **Or type your own question** lets you ask something else.
 
-**What you should see** (live results checked on November 2, 2026, and on November 3 for the listed-twice card; FEMA updates its data daily, so numbers can change):
+**What you should see** (live results checked on November 2, 2026, on November 3 for the listed-twice card, and on November 4 for the utility repairs card; FEMA updates its data daily, so numbers can change):
 
 | Card | Headline |
 |---|---|
@@ -49,9 +52,9 @@ A person always makes the final decision. The tool only reads data. It cannot ch
 | Expensive utility repairs | 3 of 115 utility projects cost far more than similar projects. The largest is about $149.6 million, about 31 times the $4.8 million average. |
 | Listed twice | 86 groups of near-identical project titles found in 3,099 records checked. The closest match is listed first: "Div 13 Yancey" and "DIV 13 - Yancey", two large road-repair worksheets from the same applicant ($1.38 million and $1.64 million estimated), whose titles differ only in capitals and a dash. |
 
-**What to notice.** Every number on the page comes from the check results, and the raw records are one click away. The page keeps "records checked", "flagged" and "shown" separate, so a short example list is never mistaken for the full count. It says what a flag does not prove. For repeated worksheets, titles are compared after ignoring capitals, punctuation and numbers, and each group can be opened to compare its worksheets side by side, with what they share, what differs, and each worksheet's cost. A close match is a reason to compare the worksheets, not proof of double billing. Many numbered series are legitimate (separate buildings, sites or phases), and the page says so.
+**What to notice.** Every number on the page comes from the check results, and the raw records are one click away. The page keeps "records checked", "flagged" and "shown" separate, so a short example list is never mistaken for the full count. It says what a flag does not prove. For repeated worksheets, titles are compared after ignoring capitals, punctuation and numbers, and each group can be opened to compare its worksheets side by side, with what they share, what differs, and each worksheet's cost. A close match is a reason to compare the worksheets, not a determination that anything was paid twice. Many numbered series are legitimate (separate buildings, sites or phases), and the page says so.
 
-### About the live app version
+### What changed and when
 
 On November 2, 2026 we made two changes:
 
@@ -64,18 +67,21 @@ The October 29 zip in this folder, its fingerprint (`f70d0a80...`) and its recor
 
 **November 3, 2026 update (live app only).** To make the listed-twice result easier to judge, we added the side-by-side view described above, labelled each group by how closely its titles match, listed the closest matches first, and moved the card to North Carolina disaster 4827, where the closest matches are clearer than in Florida 4673. The rule that decides which worksheets are grouped did not change: Florida 4673 still gives 74 groups and North Carolina 4827 gives 86. This changed the app's code, so the live app is now newer than the November 2 zip and its code fingerprint no longer matches the recorded run. We checked the new code with the 71 automated tests and the lint check (all passed), compared one group's worksheets with FEMA's records directly (they matched) and ran the card's question through the app. We did not repeat the full recorded run. The zip, its fingerprint and its recorded run are unchanged.
 
+**November 4, 2026 update (documents only).** We wrote the final submission package, `2026-HACKATHON/SUBMISSION_FINAL/FINAL_SUBMISSION_PACKAGE.md` in the team workspace. It contains the executive summary, architecture, the step-by-step agent design, tool definitions, the live demo script, the full evaluation and its results, security and governance controls, the replacement slide deck with speaker notes, and answers to likely judge questions. This page now uses the same wording. No app code changed. We re-ran the 71 automated tests and the lint check on the November 2 zip (all passed; its code is identical to our backup copy of the November 2 release). We also re-checked the utility repairs card against live FEMA data with a separate direct query: same 115 records, same $4,802,096.50 average, same 3 projects. The separate query used a slightly different standard-deviation formula (sample instead of population), so it scores the top project 7.70 instead of 7.73; the projects and their order are the same. The hosted app was not re-tested from a notebook, because its sign-in redirect cannot be completed there.
+
 If the app page does not open for you, use the notebook below. It shows the same check results and needs no login.
 
 ## Why this entry should win
 
-| Judging question | Our answer |
+| Judging criterion | Our answer |
 |---|---|
-| Does it use the dataset well? | It works directly on live, public OpenFEMA data. Nothing is copied or pre-cooked. |
-| Is it accurate? | Exact numbers 10/10 with tools vs. 0/10 without. All tool results matched an independent check 2/2. |
-| Can a reviewer trust it? | Every answer shows its source records, method, and limits. It never calls a flag "fraud". |
-| Is it safe? | Read-only. Bad or risky inputs are rejected with a clear message. Runs behind Databricks sign-in. |
-| Is it real? | Deployed and running today as a Databricks App, with 71 automated tests passing. |
-| Is it honest? | It reports "nothing found" when nothing is found, publishes its known limits, and when we changed a rule we said why and re-ran every check. |
+| Technical quality | The AI only chooses tools; code does every calculation; the answer is built from tool results. 71 automated tests pass. Tool results matched a separate calculation every time. |
+| Innovation | A step-by-step agent design that limits the AI to choosing tools, can say "no" or "no usable evidence", and always ends with a person. Every answer carries its own evidence chain. |
+| Mission alignment | Helps FEMA and oversight reviewers decide where to look first in Public Assistance, with evidence they can defend. |
+| Presentation | A two-minute demo: three Hurricane Ida utility projects, the evidence behind each, and the decision handed to a person. |
+| Trust | Every answer shows source records, method, limits and retrieval time, and is labelled a review indicator. Only a person makes a determination. |
+| Safety | Read-only tools. Bad inputs are rejected with a clear message. Runs behind Databricks sign-in. |
+| Honesty | It reports "nothing found" when nothing is found, publishes its known limits, and when we changed a rule we said why and re-ran every check. |
 
 ## Want to check our claims? (5 minutes, optional)
 
@@ -89,7 +95,9 @@ If the app page does not open for you, use the notebook below. It shows the same
 |---|---|
 | FEMA Public Assistance | FEMA money paid to states and towns to repair public infrastructure after a disaster |
 | OpenFEMA | FEMA's free, public data website |
-| Review indicator / flag | A reason for a person to look more closely. Not a finding of wrongdoing. |
+| Review indicator | A reason for a person to look more closely, based on a published rule. The app shows these under "Flagged for review". It is not a determination; a person decides. |
+| Review recommendation | The tools' answer: which records to review first, with the evidence behind them |
+| Evidence chain | What travels with every answer: data source, retrieval time, scope, method, record identity (disaster, applicant, project worksheet), limits and review status |
 | Project worksheet | FEMA's record for one repair project |
 | Category C | FEMA's label for roads and bridges |
 | Category F | FEMA's label for utilities, such as power, water and sewer |
@@ -105,6 +113,7 @@ If the app page does not open for you, use the notebook below. It shows the same
 | `FEMA_Hackathon_Submission_2026-10-29.zip` | The submitted code, documents, deck, video and raw evaluation evidence |
 | `/Volumes/users/phebe_arouni/hackathon_submissions/20261102/` | November 2 update: `FEMA_Hackathon_Submission_2026-11-02.zip`, plus the updated deck, video and judge brief as separate files |
 | `README_FOR_JUDGES.md` | This page |
+| `2026-HACKATHON/SUBMISSION_FINAL/FINAL_SUBMISSION_PACKAGE.md` (team workspace) | November 4 final submission package: summary, architecture, demo script, evaluation, controls, replacement deck content and judge Q&A. The .pptx files in the zip and volume are the November 2 version. |
 
 ## Main documents inside the zip (for technical reviewers)
 
@@ -127,13 +136,14 @@ If the app page does not open for you, use the notebook below. It shows the same
 | Automated tests | Built-in quality checks | 71/71 pass; lint clean |
 | Tool output vs. independent SQLite calculation | Our results match a separate calculation done another way | 2/2 exact matches (3 expensive road projects and 74 repeated-title groups flagged) |
 | Model picks the correct first tool | The AI chooses the right tool for the question | 8/8 questions |
-| Exact counts with tools vs. without tools | Correct numbers with our tools vs. a plain chatbot | 10/10 vs 0/10 (without tools, the model declined to answer every time) |
+| Exact counts with tools vs. without tools | Correct numbers with our tools vs. the same AI model with no data access | 10/10 vs 0/10 (without tools, the model declined to answer every time) |
 | End-to-end grounded review workflows | Full question-to-evidence runs that work start to finish | 2/2 |
+| Live re-check, November 4, 2026 | The utility repairs card still matches a separate direct query of live FEMA data | Same 3 projects out of 115; top project PW 1725, Houma Power Plant, $149.6 million |
 
-These results are from small, targeted test sets. They are not general accuracy claims. The tools produce review indicators, not findings of fraud or improper payment.
+The notebook shows the checks for the scenarios the app features. The full recorded run also includes one more screening check that the app no longer features; with it, the totals are 15/15 tool choices, 15/15 vs 0/15 exact counts, 3/3 independent matches and 3/3 workflows (final submission package, Section 12). These results are from small, targeted test sets. They are not general accuracy claims. The tools produce review indicators for a person to review; they do not make determinations.
 
 ## Links (workspace login required)
 
 * App (open in a browser): https://2026h-7474654188777746.aws.databricksapps.com (AI tool endpoint at `/mcp`)
-* Validation job: `67919837469456`. MLflow experiment `1305734463288268`, run `23ad3105a83e472da58224d902de53ea` (October 29: `7445e452abfc4cd89896658d4ab7f44a`)
-* Public repository: https://github.com/phebeong/2026-HACKATHON (commit `f21fe97`)
+* Validation job: `67919837469456`. MLflow experiment `1305734463288268`, recorded run `20261102T152007Z` = MLflow run `ff6c41f62dc04e2c929fea1e08ba3e21` (earlier November 2 run: `23ad3105a83e472da58224d902de53ea`; October 29: `7445e452abfc4cd89896658d4ab7f44a`)
+* Public repository: https://github.com/phebeong/2026-HACKATHON (October 29 submission commit `f21fe97`; the November 4 final submission package is not yet pushed)
