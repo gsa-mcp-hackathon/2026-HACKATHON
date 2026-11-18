@@ -6,10 +6,71 @@ GSA MCP Server & AI Agent Government Hackathon | Dataset Access track | Phebe Ar
 
 Evidence of record: recorded run `20261102T152007Z` (Python source SHA-256 `9cdad51ec7870e12d2fff37a2b570a5030835a5b799f542b8560f6224990ea94`, MLflow run `ff6c41f62dc04e2c929fea1e08ba3e21`, experiment `1305734463288268`), plus re-verification on November 4, 2026 at 06:53 UTC against live OpenFEMA data.
 
+November 18, 2026 update: a v1.1 candidate MCP server, with its own recorded evaluation, is in `SUBMISSION_FINAL/mcp_server_v1_1/` (run `20261118T094257Z`, source SHA-256 `6dee75f765962a954ca75ca7cb5884d5f198f48eac87d3408fa7cff78386dd98`). Section 0 maps it to the three judging criteria. The deployed app and the v1.0 evidence above are unchanged.
+
+---
+
+## 0. v1.1 Candidate Against the Judging Criteria
+
+The v1.1 tree combines the tested v1.0 tools (the code the live app runs) with the strongest parts of the October 30 repository line: a separate data client, one methodology module, a cross-indicator review queue, and structured errors. We rebuilt it around the three criteria. It does not replace the recorded v1.0 run. It has its own tests and its own recorded run.
+
+### Criterion 1: Code readability and maintainability
+
+| Module | Single responsibility | Depends on |
+| --- | --- | --- |
+| `schemas/inputs.py` | Pydantic request model per tool: validated, described, `extra="forbid"` | nothing internal |
+| `schemas/outputs.py` | Pydantic result models; published as each tool's `outputSchema` | inputs (enums) |
+| `data_access.py` | `PAQuery` (what to fetch), `OpenFEMASource` (hardened HTTP), `SnapshotSource` (archived data) | errors |
+| `indicators.py` | The three review rules as pure functions; no I/O, MCP, or HTTP | `to_number` only |
+| `methodology.py` | Methodology cards, caveat, limitations, provenance builder: one source of truth for what each rule means | schemas |
+| `errors.py` | `ReviewToolError` with stable codes and a fixed message shape | nothing |
+| `tools/screening.py`, `tools/review.py` | Agent-facing actions: `run_*` logic plus `register()` | all of the above |
+| `server.py` | `build_server(source)`: the only place components are wired together | tools, methodology |
+
+Dependencies run one way, so you can read and test any rule without MCP or a network. Comments and docstrings explain why the code does something (for example, why `pwNumber` alone is not an identity, or why the snapshot source exists). Lint and format checks are clean (ruff, 120 columns).
+
+### Criterion 2: Server performance and reliability (evaluation setup and results)
+
+Harness: `eval/run_evaluation.py`. Every check calls the real tools through an in-memory MCP client, the same way an agent does, and compares the result with something computed independently. Run `20261118T094257Z`: 37 of 37 checks passed. Separately, 63 of 63 unit and contract tests passed.
+
+| Suite | Inputs | Result |
+| --- | --- | --- |
+| Controls | Archived OpenFEMA snapshots from run 20261102T152007Z: FL DR-4734 cost share (238 rows), FL DR-4673 repeats (3,964 rows), FL DR-4673 Category C (179 rows). Compared with an independent SQLite implementation and with the v1.0 recorded tool output | 3/3 exact matches: 238 = 238 = 238; 74 = 74 = 74; 3 = 3 = 3 |
+| Error handling | 15 bad-argument cases (unknown category, out-of-range sigma, inverted band, OData injection in state and applicant, misspelled argument, unknown record, empty baseline) plus 4 simulated upstream failures (503, 429, invalid JSON, missing record list) | 19/19 return `isError` with the field named or a coded message `[CODE] ... Hint: ... Retryable: yes/no`; no stack trace or upstream URL leaked |
+| Contract | Tool list and schemas | 5/5: exact tool set, all read-only, USE WHEN / DO NOT USE in every description, every input field described, output schema on every tool |
+| Stability | 10 identical calls per tool | 6/6 tools returned identical results (timestamps excluded); in-process p50 6-81 ms |
+| Live | Current OpenFEMA vs. a direct query written independently of the server | 4/4: LA DR-4611 Cat F gives 115 records and PWs 1725 / 1679 / 5757 at 7.73 / 4.75 / 3.29 sigma; NC DR-4827 gives 86 = 86 groups (2 same-wording); evidence brief PW 1725 (Houma Power Plant) re-check met; review queue LA DR-4611 built from 3,648 records, not truncated; live calls 0.44-0.79 s |
+
+Negative check: when one snapshot amount was changed to $1e9, the control comparison reported a mismatch, so a passing control means something. Results are in `eval/results/20261118T094257Z/EVALUATION_REPORT.md`, and `summary.json` is in the volume `hackathon_submissions/20261118_v1_1_eval/`.
+
+### Criterion 3: Adherence to MCP design principles
+
+* Pydantic inputs: each tool takes one validated request model. Invalid input is rejected before any tool code runs, and the error names the field, for example `params.applicant_id String should match pattern ...`.
+* Typed outputs: every tool publishes an `outputSchema` and returns `structuredContent` with shared `provenance`, `data_scope` (count, cap, `possibly_truncated`), and `page` blocks.
+* Descriptions written for the model: every description says what the tool does, USE WHEN, DO NOT USE (naming the sibling tool to use instead), the required scope, and how to read the result. Server `instructions` give the routing order.
+* Tools built around goals, not endpoints. All six tools read the same single OpenFEMA endpoint, so the tools are defined by analyst questions:
+
+| Tool | Analyst goal | What it does beyond one REST call |
+| --- | --- | --- |
+| `build_review_queue` | Where do I start in this disaster? | One retrieval, all three rules (category outliers for every category), merged by worksheet identity, ranked, every reason listed |
+| `screen_category_cost_outliers` | Which projects cost far more than similar work? | Builds the baseline, computes sigma, ranks, records scope |
+| `find_repeated_worksheet_groups` | Is the same project listed more than once? | Normalizes titles, groups, labels each group same_wording or numbered_series, puts closest matches first |
+| `screen_cost_share_ratios` | Which federal shares fall outside the band? | Computes ratios, marks below or above the band, states the authorization limit |
+| `prepare_evidence_brief` | Give me the evidence package for this worksheet | Resolves identity (reports ambiguity), re-runs the triggering rule against fresh peers, adds the method card and next review steps |
+| `explain_review_indicator` | How was this produced, and what can't it tell me? | Returns the same card the tools execute against; makes no network call |
+
+* Safety: every tool has `readOnlyHint: true`, `destructiveHint: false`, and `idempotentHint: true`. There are no write, approve, or disposition tools. `mask_error_details=True` hides internal exceptions.
+* Resources `fema-pa://provenance` and `fema-pa://methodology`, and the prompt `disaster_review(state_code, disaster_number)`.
+
+Name changes from v1.0: `detect_category_outliers` -> `screen_category_cost_outliers`, `find_repeated_worksheets` -> `find_repeated_worksheet_groups`, `get_cost_share_anomalies` -> `screen_cost_share_ratios`, `explain_risk_indicator` -> `explain_review_indicator`, `generate_evidence_brief` -> `prepare_evidence_brief`. New: `build_review_queue`.
+
+What v1.1 has not done yet: the model-in-the-loop measurements (first-tool selection 15/15, golden sets, with-tools vs. no-tools 15/15 vs. 0/15) were recorded on v1.0 names and descriptions and have not been re-run on v1.1. The analyst web page and bounded agent loop stay in the deployed v1.0 app and are not part of the v1.1 tree. v1.1 is not deployed.
+
 ---
 
 ## Contents
 
+0. v1.1 Candidate Against the Judging Criteria
 1. Executive Summary
 2. Winning Elevator Pitch
 3. Final Problem Statement
