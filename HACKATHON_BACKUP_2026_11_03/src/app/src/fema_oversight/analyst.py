@@ -10,6 +10,7 @@ import httpx
 from fastmcp import Client
 
 from fema_oversight.grounding import evidence_summary
+from fema_oversight.review_map import map_target
 
 SYSTEM = (
     "Assist a FEMA Public Assistance analyst using only the available tools. "
@@ -77,6 +78,8 @@ async def run_review(server, question):
                 record["answer"] = evidence_summary(record["tool_calls"])
                 record["answer_mode"] = "deterministic_tool_evidence"
                 record["elapsed_seconds"] = round(time.perf_counter() - started, 3)
+                # Step 3 input for the page: public identifiers only, or None.
+                record["map_request"] = map_target(record["tool_calls"])
                 return record
             for call in calls:
                 if len(record["tool_calls"]) >= 8:

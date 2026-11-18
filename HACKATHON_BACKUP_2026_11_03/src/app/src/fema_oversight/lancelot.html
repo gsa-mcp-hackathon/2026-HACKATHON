@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Test Lancelot</title>
+<link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest" crossorigin="use-credentials"><meta name="theme-color" content="#005288">
+<style>
+:root{--ink:#14232b;--muted:#51616a;--line:#d9e1e5;--bg:#f3f6f8;--teal:#0f766e;--red:#b42318;--amberbg:#fff6e5;font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+*{box-sizing:border-box}body{margin:0}a{color:var(--teal)}
+header{background:linear-gradient(120deg,#0b2e4f,#0f4c5c);color:#fff;padding:20px 32px}
+header h1{margin:0;font-size:21px}header p{margin:4px 0 0;color:#bfe3e0;font-size:14px}
+main{max-width:1100px;margin:auto;padding:24px 32px 40px}
+.banner{font-size:14px;color:#6c4a06;background:var(--amberbg);padding:10px 16px;border-radius:10px;border-left:4px solid #f59e0b;margin-bottom:18px}
+.btn{font:inherit;font-weight:600;background:var(--teal);color:#fff;border:0;border-radius:8px;padding:10px 18px;cursor:pointer}.btn:disabled{opacity:.6;cursor:wait}
+.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin-top:16px}
+.panel h2{margin:0 0 6px;font-size:18px}
+.st{font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:#eef3f5;margin-left:8px;vertical-align:middle}
+.st.pass{background:#dcf2ee;color:#0f5f58}.st.fail{background:#fde2e0;color:#8f1d14}.st.run{background:#fde7c7;color:#8a4b06}
+.err{color:var(--red);font-weight:600}.meta{font-size:13.5px;color:var(--muted)}
+pre{white-space:pre-wrap;word-break:break-word;font-size:12px;background:#f1f5f7;padding:12px;border-radius:8px;max-height:360px;overflow:auto}
+img.out{max-width:100%;border:1px solid var(--line);border-radius:8px;background:#fff;display:block;margin:8px 0}
+iframe.widget{width:100%;height:760px;border:1px solid var(--line);border-radius:8px;background:#fff;margin:8px 0}
+details{margin-top:6px}summary{cursor:pointer;color:var(--teal);font-weight:600}
+</style></head><body>
+<header><h1>Test Lancelot</h1><p>Connection test for the Lancelot Beta MCP server &middot; <a href="/" style="color:#fff">Back to the app</a></p></header>
+<main>
+<div class="banner"><b>Lancelot is a BETA service.</b> It keeps every input in its trace logs for 30 days. Send only synthetic or public data, never sensitive or non-public information. This test sends a synthetic workflow and public FEMA disaster 4856.</div>
+<p class="meta">Calls run as this app's service principal, not as you. Each call opens a new session. A diagram can take up to about 70 seconds.</p>
+<button class="btn" id="go" type="button">Test Lancelot</button>
+<section class="panel" id="p-tools"><h2>1. tools/list <span class="st" id="st-tools">not run</span></h2><div id="o-tools"></div></section>
+<section class="panel" id="p-diagram"><h2>2. generate_diagram (synthetic workflow) <span class="st" id="st-diagram">not run</span></h2><div id="o-diagram"></div></section>
+<section class="panel" id="p-choropleth"><h2>3. generate_choropleth (disaster 4856) <span class="st" id="st-choropleth">not run</span></h2><div id="o-choropleth"></div></section>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+function el(tag,attrs,...kids){const e=document.createElement(tag);for(const[k,v]of Object.entries(attrs||{})){if(v==null)continue;if(k==="class")e.className=v;else if(k==="text")e.textContent=v;else e.setAttribute(k,v)}for(const c of kids){if(c==null)continue;e.append(c instanceof Node?c:document.createTextNode(String(c)))}return e}
+function status(id,cls,text){const s=$("#st-"+id);s.className="st "+cls;s.textContent=text}
+function pre(obj){return el("pre",{text:typeof obj==="string"?obj:JSON.stringify(obj,null,2)})}
+function png(img){if(!img||img.mimeType!=="image/png"||!/^[A-Za-z0-9+/=]+$/.test(img.data))return null;return el("img",{class:"out",alt:"Lancelot PNG output",src:"data:image/png;base64,"+img.data})}
+async function post(step){const r=await fetch("/lancelot/test/"+step,{method:"POST",headers:{"Content-Type":"application/json"},body:"{}"});let d;try{d=await r.json()}catch(_){throw Error("Unreadable response (HTTP "+r.status+").")}if(!r.ok)throw Error(d&&d.error?d.error:"HTTP "+r.status);return d}
+function toolError(out,res){const j=res.json||{};out.append(el("p",{class:"err",text:"Tool error: "+(j.errorCode||"unknown")+(j.stage?" at stage "+j.stage:"")}));for(const t of res.texts||[])out.append(pre(t))}
+function runIdLine(res){const j=res.json||{};return el("p",{class:"meta",text:"runId: "+(j.runId||"n/a")+" \u00b7 status: "+(j.status||"n/a")+(j.diagramType?" \u00b7 diagramType: "+j.diagramType:"")})}
+async function step(id,fn){status(id,"run","running");const out=$("#o-"+id);out.replaceChildren();const t0=performance.now();
+ try{const d=await post(id);const ok=fn(out,d);const s=Math.round((performance.now()-t0)/100)/10;status(id,ok?"pass":"fail",(ok?"passed":"failed")+" in "+s+" s");return ok}
+ catch(e){status(id,"fail","failed");out.append(el("p",{class:"err",text:e.message}));return false}}
+function showTools(out,d){const tools=d.tools||[];for(const t of tools){out.append(el("h3",{text:t.name}),el("p",{class:"meta",text:t.description||""}),el("details",{},el("summary",{text:"Input schema"}),pre(t.inputSchema)))}
+ const names=tools.map(t=>t.name);return names.includes("generate_diagram")&&names.includes("generate_choropleth")}
+function showDiagram(out,res){if(res.isError){toolError(out,res);out.append(runIdLine(res));return false}
+ out.append(runIdLine(res));const img=png(res.images&&res.images[0]);if(img)out.append(img);out.append(el("details",{},el("summary",{text:"JSON result"}),pre(res.json||{})));return !!img}
+function showChoropleth(out,res){if(res.isError){toolError(out,res);out.append(runIdLine(res));return false}
+ out.append(runIdLine(res));for(const t of res.texts||[])out.append(el("p",{text:t}));
+ const w=res.html&&res.html[0];if(w){out.append(el("p",{class:"meta",text:"Interactive widget ("+w.uri+")"}));const f=el("iframe",{class:"widget",sandbox:"allow-scripts",title:"Choropleth widget"});f.srcdoc=w.html;out.append(f)}
+ const img=png(res.images&&res.images[0]);if(img){out.append(el("p",{class:"meta",text:"Static PNG"}),img)}
+ out.append(el("details",{},el("summary",{text:"JSON result"}),pre(res.structuredContent||res.json||{})));return !!(w&&img)}
+$("#go").onclick=async()=>{const b=$("#go");b.disabled=true;
+ for(const id of["tools","diagram","choropleth"]){status(id,"","waiting");$("#o-"+id).replaceChildren()}
+ try{const ok=await step("tools",showTools);
+  if(!ok&&/Can Use/.test($("#o-tools").textContent)){status("diagram","fail","skipped");status("choropleth","fail","skipped");return}
+  await step("diagram",showDiagram);await step("choropleth",showChoropleth)}finally{b.disabled=false}};
+</script></body></html>

@@ -12,10 +12,13 @@ import os
 from fastmcp import FastMCP
 
 from fema_oversight.config import settings
+from fema_oversight.favicon import register_favicon
+from fema_oversight.lancelot_web import register_lancelot_web
 from fema_oversight.prompts import register_prompts
 from fema_oversight.resources import register_resources
 from fema_oversight.routes import register_routes
 from fema_oversight.tools import register_tools
+from fema_oversight.volume_log import setup_logging
 from fema_oversight.web import register_web
 
 mcp = FastMCP(
@@ -33,16 +36,27 @@ register_prompts(mcp)
 register_resources(mcp)
 register_routes(mcp)
 register_web(mcp)
+register_lancelot_web(mcp)
+register_favicon(mcp)
 
 
 def main() -> None:
     """Start the server, choosing transport from the environment."""
+    http_middleware = setup_logging(mcp, settings.log_volume_path or None)
     platform_port = os.getenv("DATABRICKS_APP_PORT") or os.getenv("PORT")
     if platform_port:
-        mcp.run(transport="http", host="0.0.0.0", port=int(platform_port))
+        mcp.run(
+            transport="http",
+            host="0.0.0.0",
+            port=int(platform_port),
+            middleware=http_middleware,
+        )
     elif settings.mcp_transport == "streamable-http":
         mcp.run(
-            transport="streamable-http", host=settings.mcp_host, port=settings.mcp_port
+            transport="streamable-http",
+            host=settings.mcp_host,
+            port=settings.mcp_port,
+            middleware=http_middleware,
         )
     else:
         mcp.run()

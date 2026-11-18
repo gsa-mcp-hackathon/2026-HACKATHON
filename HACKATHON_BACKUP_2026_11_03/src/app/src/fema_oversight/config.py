@@ -24,5 +24,9 @@ class Settings(BaseSettings):
     # so live demos stay responsive.
     openfema_page_size: int = 1000
 
+    # Unity Catalog volume folder for persistent JSON-lines logs (see
+    # volume_log.py). Empty = console logging only. Set via LOG_VOLUME_PATH.
+    log_volume_path: str = ""
+
 
 settings = Settings()
