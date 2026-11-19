@@ -1,0 +1,14 @@
+{
+  "source_repository_commit": "1a3aa20f54a8d35a8f269fca50e1656182baef00",
+  "source_path": "HACKATHON_BACKUP_2026_11_03/migration_data/volume_files/20261102/FEMA_Hackathon_Submission_2026-11-02.zip",
+  "recorded_run": "20261102T152007Z",
+  "files_sha256": {
+    "20261102T152007Z/summary.json": "ba96421a81ddce22c13b6eca9fd165470470e0fc5a3403b0a66349c684db5562",
+    "20261102T152007Z/snapshot_category.json": "d45149789e5c60c2cdfdcd380c6ecb297b0b8366a68d3a540b5a40d98ea6a5b5",
+    "20261102T152007Z/snapshot_cost_share.json": "7c343a2ff540f5b0b245b4b5749811b75a5e003623dcef60b5ba26a3ab3ff384",
+    "20261102T152007Z/snapshot_repeated.json": "596132f9abc6fc58a1b74f75c3823aaaf5f61c377a16d2ce5d3db08b11c5b871",
+    "20261102T152007Z/comparison_category.json": "63e4bb4527aa0610ec00938c4ceb7ab5583041576488212ea7af842b1fc5cc59",
+    "20261102T152007Z/comparison_cost_share.json": "4f2017d0f51c7c0e859f722d4f718c7dc46f9bbaa3dc03ea23b10b78eb0277f4",
+    "20261102T152007Z/comparison_repeated.json": "8b38b63b05edc7699815a91675ec7c871f777de8f4ac38889c7d5717ff0bcdf5"
+  }
+}

@@ -1,15 +1,14 @@
-"""FEMA Public Assistance Evidence & Oversight Graph — MCP server package.
+"""FEMA Evidence & Oversight Graph: an MCP server for evidence-backed review.
 
-Transforms open FEMA Public Assistance data into traceable, explainable,
-analyst-ready oversight intelligence. Every tool returns REVIEW INDICATORS on
-public aggregate data, never findings; a human analyst makes every decision.
+The package is layered so each part can be read on its own:
 
-Architecture guide:
-* ``clients.py`` — fixed-origin OpenFEMA access, caching, metadata
-* ``models.py`` — strict Pydantic schemas for MCP tools
-* ``tools/`` — goal-oriented analyst actions
-* ``middleware.py`` — structured errors and rate limiting
-* ``resources/`` — provenance, methodology, and guardrails published to clients
+* ``schemas.inputs``   what an agent may send (validated Pydantic models)
+* ``schemas.outputs``  what an agent gets back (typed, self-describing results)
+* ``data_access``      how records are retrieved (OpenFEMA or an archived snapshot)
+* ``indicators``       the review rules themselves (pure functions, no I/O)
+* ``methodology``      the documented method, limits, and provenance text
+* ``tools``            agent-facing actions that combine the layers above
+* ``server``           FastMCP wiring: tools, resources, prompt, transport
 """
 
-__version__ = "0.1.0"
+__version__ = "1.1.0"

@@ -1,6 +1,0 @@
-# Empty experiment; past run history (params/metrics/tags) is re-logged by
-# the restore_hackathon_data job from ../migration_data/mlflow_runs.json.
-resources:
-  experiments:
-    hackathon_eval:
-      name: /Workspace/Users/${workspace.current_user.userName}/FEMA Hackathon Evaluation

@@ -1,9 +1,0 @@
-command:
-  - /bin/sh
-  - -c
-  - export PYTHONPATH=/app/python/source_code/src:$PYTHONPATH && python -m fema_oversight.app
-env:
-  # Persistent JSON-lines logs (see src/fema_oversight/volume_log.py).
-  # The app service principal has READ/WRITE VOLUME on this volume.
-  - name: LOG_VOLUME_PATH
-    value: /Volumes/users/tom_jacobson/app_2026h_logs/2026h

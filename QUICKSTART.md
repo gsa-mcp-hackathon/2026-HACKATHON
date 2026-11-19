@@ -1,91 +1,57 @@
-# Quickstart — Your First MCP Server in 5 Minutes
+# Run and verify the submission
 
-New to MCP? This gets you from clone to a running server connected to a client.
+Prerequisites: Git, uv, Python 3.12 and a terminal. Commands run from the repository root. uv can install a compatible Python if needed.
 
-## 1. Install prerequisites
-
-You need [uv](https://docs.astral.sh/uv/) (a fast Python package manager):
-
-```bash
-pip install uv     # or: brew install uv
+```sh
+git clone https://github.com/gsa-mcp-hackathon/2026-HACKATHON.git
+cd 2026-HACKATHON
+uv sync --extra dev --frozen
+uv run pytest -q
+uv run ruff check .
+uv run ruff format --check .
+uv run python eval/run_evaluation.py --output-dir eval/results/my-offline-run
 ```
 
-## 2. Set up the project
+Expected offline result: 63 tests and 33 evaluation checks. The evaluation uses the included dated public-data fixtures and makes no FEMA request. Generated latency depends on the machine. Use a new output directory so checked-in evidence remains unchanged.
 
-```bash
-cp .env.example .env
-uv sync
-```
+## Connect an MCP client locally
 
-## 3. Run the server
-
-```bash
-uv run python main.py
-```
-
-The server starts in **stdio** mode and waits for a client to connect over
-stdin/stdout. That's correct — it doesn't print a URL, because a local MCP
-server is launched *by* the client as a subprocess. Press `Ctrl-C` to stop it.
-
-## 4. Connect a client
-
-### Claude Code
-
-Create or edit `.mcp.json` (or your user MCP settings) with the **absolute path**
-to this repo:
+Run `uv run python main.py` as a stdio subprocess from this directory. The server waits for MCP messages; that is normal. In clients that accept JSON configuration, use:
 
 ```json
 {
   "mcpServers": {
-    "fema-oversight-mcp": {
+    "fema-oversight": {
       "command": "uv",
-      "args": ["run", "fema-oversight-server"],
-      "cwd": "/absolute/path/to/fema-oversight-mcp"
+      "args": ["--directory", "/absolute/path/to/2026-HACKATHON", "run", "python", "main.py"]
     }
   }
 }
 ```
 
-### Claude Desktop
+Replace the directory with your actual absolute path. On Windows, use forward slashes or escaped backslashes. The exact configuration location depends on the client. Tool discovery should return [these six tools](docs/TOOLS.md), two resources and one prompt.
 
-Add the same block to
-`~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or
-`%APPDATA%\Claude\claude_desktop_config.json` (Windows), then restart Claude
-Desktop.
+## Optional live verification
 
-Once connected, ask the client to call a tool, e.g.:
-
-> "Use the get_cost_share_anomalies tool to find Florida cost-share anomalies."
-
-You'll get real review indicators from the public FEMA data, proof the server works end to end.
-
-## 5. Verify everything
-
-```bash
-uv sync --group dev
-uv run pytest tests/ -v      # tests pass
-uv run ruff check .          # lint clean
+```sh
+uv run python eval/run_evaluation.py --live --output-dir eval/results/my-live-run
 ```
 
-## 6. Test HTTP mode (optional)
+This adds four live checks. It requires OpenFEMA availability and may fail or return changed counts as public data refreshes. An upstream timeout is a failed or incomplete live run, never an offline pass.
 
-Cloud hosts run the server over HTTP. Try it locally:
+## Optional sandbox HTTP
 
-```bash
-MCP_TRANSPORT=streamable-http uv run python main.py
-# in another terminal:
-curl http://localhost:8000/health      # {"status":"healthy",...}
+PowerShell:
+
+```powershell
+$env:PORT='8080'
+uv run python main.py
 ```
 
----
+POSIX shell:
 
-## Next steps
+```sh
+PORT=8080 uv run python main.py
+```
 
-- **Add a real tool** — follow "The one-tool-per-file pattern" in the
-  [README](README.md#the-one-tool-per-file-pattern).
-- **Rename the package** from `fema_oversight` to your service — see the
-  [README](README.md#rename-the-package).
-- **Deploy it** — pick a kit in [deploy/README.md](deploy/README.md)
-  (IBM watsonx Orchestrate or Databricks).
-- **Evaluate it** — build an eval harness with the `mcp-eval` skill; see
-  [eval/README.md](eval/README.md).
+Connect a streamable-HTTP MCP client to `http://localhost:8080/mcp`. There is no `/health` route in v1.1. HTTP binds to all interfaces and does not add authentication. Use controlled sandbox access; [deployment notes](deploy/README.md).

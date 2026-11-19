@@ -1,73 +1,49 @@
-# FEMA Evidence & Oversight Graph
+# FEMA Oversight MCP
 
-Read-only MCP tools for reviewing public FEMA Public Assistance funded-project records. Indicators carry their method, source context and limits; a human decides what they mean.
+**Start here, judges:** [submission package](SUBMISSION.md), [judges deck](presentation/FEMA_Oversight_MCP_Judges_Deck.pptx), [editable Word package](docs/FEMA_Oversight_MCP_Submission_Package.docx).
 
-**Reviewers:** start with [SUBMISSION.md](SUBMISSION.md). The reference Databricks run has **64 passing tests, three exact control comparisons and 15/15 expected first-tool selections**. The displayed browser summary is assembled from tool evidence; 3/3 real review workflows passed. These narrow results do not establish general answer or filter accuracy. [Evaluation details](eval/evaluation_documentation.md).
+Public-data review preparation for FEMA Public Assistance. Six read-only MCP tools turn OpenFEMA funded-project records into a ranked review queue, documented screening results, and a worksheet evidence brief. Code computes the indicators. A human decides whether further review is warranted.
 
-## Five Tools
+MCP discovery displays the server name `FEMA Evidence & Oversight Graph`; the submission title is FEMA Oversight MCP. [Preview the slides as PDF](presentation/FEMA_Oversight_MCP_Judges_Deck.pdf) or [read the package as PDF](docs/FEMA_Oversight_MCP_Submission_Package.pdf).
 
-| Tool | Analyst goal | Important limit |
-|---|---|---|
-| `get_cost_share_anomalies` | Screen federal/total obligated ratios against a band | Band exceptions do not establish unauthorized cost share |
-| `find_repeated_worksheets` | Find same-disaster/applicant/title/category groups | Exact-title matching is not proof of duplicate scope |
-| `detect_category_outliers` | Compare amounts with a selected category baseline | Retrieved subset, not matched engineering costs |
-| `explain_risk_indicator` | Read the calculation, thresholds and limits | Static card, not policy adjudication |
-| `generate_evidence_brief` | Package selected project records | Supply full project identity; trigger is not independently revalidated |
+Phebe Arouni and Tom Jacobson. Dataset Access Server track. Sandbox prototype, server **1.1.0**, reconciled November 19, 2026.
 
-Also exposed: `fema-pa://provenance` and `fema_oversight_review`.
+## Follow the submission in five minutes
 
-## Architecture
+| Judge task | Direct path |
+| --- | --- |
+| Understand the problem and examples | [Submission package](SUBMISSION.md) and deck slides 1-8 |
+| See how the GSA template was used | [Template adaptation with pinned upstream links](docs/GSA_TEMPLATE_ALIGNMENT.md) |
+| Inspect the six tools and exact MCP arguments | [Tool contract and examples](docs/TOOLS.md) |
+| Reproduce the results without a Databricks account | [Quickstart](QUICKSTART.md), then [evaluation guide](eval/README.md) |
+| Trace a number to its source and date | [Claims register](docs/CLAIMS_REGISTER.md) |
+| Check security and remaining limits | [Security](SECURITY.md) and [technical design](docs/TECHNICAL_DESIGN.md) |
 
-```mermaid
-flowchart LR
-  Q["Analyst question"] --> A["Bounded model tool selection"]
-  A --> T["Approved read-only MCP tools"]
-  T --> F["Public OpenFEMA API"]
-  T --> E["Records, method, source and limits"]
-  E --> H["Human analyst review"]
-  H --> B["Reviewed evidence brief"]
-```
+## Verified results and scope
 
-The graph is a review workflow. The code uses a bounded tool loop, not a separate graph orchestration framework. Human review is an operating requirement, not an electronic sign-off gate.
+- November 19 local verification: **63/63 unit and contract tests**, **33/33 offline MCP evaluation checks**, lint and format checks pass. The checked-in [machine-readable evidence](eval/results/20261119-local/) identifies the source fingerprint and run time.
+- November 18 historical v1.1 report: **37/37 checks**, comprising the same 33 offline checks plus four live checks. Its [report](eval/results/20261118T094257Z/EVALUATION_REPORT.md) is retained with its original date. The referenced Databricks-volume raw summary was not included in the original repository.
+- November 19 full verification: **37/37 checks passed**, including all four live checks, in run `20261119T134625Z`. An earlier attempt timed out; the retry succeeded. See the [full machine-readable result](eval/results/20261119-live-attempt/summary.json) and [verification status](eval/results/20261119-local/VERIFICATION.md).
 
-## Run Locally
+These checks evaluate calculations, contracts, errors and repeatability. They do not measure fraud detection, analyst agreement, model tool selection, time saved or operational adoption.
 
-Python 3.11+ and `uv` are declared by the project. The reference run used Python 3.12.3.
+## Run
 
-```powershell
-uv sync --group dev
-uv run pytest tests/ -q
-uv run ruff check .
-$env:MCP_TRANSPORT = "streamable-http"
-$env:MCP_HOST = "127.0.0.1"
+```sh
+uv sync --extra dev --frozen
 uv run python main.py
 ```
 
-Health: `http://127.0.0.1:8000/health`; MCP: `http://127.0.0.1:8000/mcp`. Default transport is stdio. The browser agent uses Databricks model authentication and is intended for the hosted environment.
+Default transport is stdio. Setting `PORT` or `DATABRICKS_APP_PORT` selects streamable HTTP at `/mcp`. No API key, model account or Databricks login is needed for the local server and offline checks. Live tools need internet access to OpenFEMA.
 
-## Databricks
+## One submitted implementation
 
-- Source: `/Workspace/Users/phebe.arouni@hq.dhs.gov/2026-HACKATHON`.
-- App: `2026h`; MCP path `/mcp`; health path `/health`.
-- Notebook: `eval/databricks/HACKATHON_VALIDATION`.
-- On-demand job: `67919837469456`.
-- Reference evidence: `eval/results/20261029T111811Z/`.
-- MLflow experiment: `1305734463288268`.
+The canonical server is [`src/fema_oversight/server.py`](src/fema_oversight/server.py). Earlier source trees, backup bundles, old decks, duplicate packages and obsolete deployment instructions were removed from the current tree. [Cleanup record](docs/REPOSITORY_CLEANUP.md). Git history retains the earlier files.
 
-[Operations runbook](docs/OPERATIONS_RUNBOOK.md) covers deployment and reruns. No keys, secrets or bearer tokens belong in this repository.
+The older Databricks analyst app is a separate v1.0 demonstration. This repository does not claim that app runs the submitted v1.1 tools. Judges can evaluate v1.1 locally without it. There is no model-driven web UI or automatic human-approval workflow in v1.1.
 
-## Source and Retrieval
+## Source and cautions
 
-[OpenFEMA Public Assistance Funded Projects Details v2](https://www.fema.gov/openfema-data-page/public-assistance-funded-projects-details-v2) is queried through its public API. No hard-coded current dataset total is claimed. Records can change after retrieval.
+[OpenFEMA Public Assistance Funded Projects Details v2](https://www.fema.gov/openfema-data-page/public-assistance-funded-projects-details-v2). Estimated project amounts, obligations and payments are different measures. These public Grants Manager records are not official financial reporting. Category outliers use retrieved-category statistics, repeated titles can describe legitimate work, and cost-share authorizations are not verified. All outputs are review indicators requiring human judgment.
 
-Cost-share screening retrieves at most 5,000 records; repeat and category screening retrieve at most 10,000. `data_scope.possibly_truncated` warns when a cap is reached. Output pagination pages screened results; it does not fetch additional source pages.
-
-[Technical design](docs/TECHNICAL_DESIGN.md) | [Security](SECURITY.md) | [Known limits](docs/LIMITATIONS_AND_ROADMAP.md) | [Sources](SOURCES.md)
-
-## October 29 evidence
-
-The hosted browser completed a real cost-share review; authenticated health and a remote MCP methodology call passed. A small fixed-snapshot count comparison matched 15/15 tool results, while the model without source access abstained in all 15 trials. These are narrow checks, not general accuracy or load claims. Inspect `eval/results/20261029T111811Z/`.
-
-## Attribution
-
-The original Technology Transformation Services MIT license is retained in `LICENSE`. This does not imply agency endorsement, production authorization or compliance certification.
+Adapted from the [GSA MCP hackathon template](https://github.com/GSA-TTS/mcp-hackathon-template). [MIT license](LICENSE), including the original TTS notice. No agency endorsement or production authorization is claimed.

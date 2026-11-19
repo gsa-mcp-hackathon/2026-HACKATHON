@@ -1,22 +1,23 @@
-"""Tool registration aggregator. One file per tool; register each here."""
+"""Agent-facing tools.
 
-from fema_oversight.tools import (
-    category_outliers,
-    cost_share_anomalies,
-    evidence_brief,
-    explain_indicator,
-    repeated_worksheets,
-    triage_queue,
-)
+Each tool is built around an analyst goal, not an API endpoint:
 
+==============================  ==================================================
+Tool                            Analyst goal
+==============================  ==================================================
+build_review_queue              "Where should I start in this disaster?"
+screen_category_cost_outliers   "Which projects cost far more than similar work?"
+find_repeated_worksheet_groups  "Is the same project listed more than once?"
+screen_cost_share_ratios        "Which federal-share percentages look unusual?"
+explain_review_indicator        "How was this result produced, and what are its limits?"
+prepare_evidence_brief          "Give me the evidence package for this worksheet."
+==============================  ==================================================
 
-def register_tools(mcp) -> None:
-    # Detection layer
-    cost_share_anomalies.register(mcp)
-    repeated_worksheets.register(mcp)
-    category_outliers.register(mcp)
-    # Explainability layer
-    explain_indicator.register(mcp)
-    evidence_brief.register(mcp)
-    # Analyst workflow layer
-    triage_queue.register(mcp)
+Every tool is read-only. Each module exposes ``run_*`` coroutines (pure tool
+logic, callable directly by tests and evaluation) and a ``register`` function
+that publishes them on a FastMCP server.
+"""
+
+from fema_oversight.tools import review, screening
+
+__all__ = ["review", "screening"]

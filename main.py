@@ -1,18 +1,6 @@
-"""Root entry point for local development.
+"""GSA-template style local entry point for the submitted FEMA MCP server."""
 
-Run locally:
-    uv run python main.py
-
-Or via the installed script:
-    uv run fema-oversight-server
-"""
-
-import sys
-from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
-
-from fema_oversight.app import main  # noqa: E402
+from fema_oversight.server import main
 
 if __name__ == "__main__":
     main()
