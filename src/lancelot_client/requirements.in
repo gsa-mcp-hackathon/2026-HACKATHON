@@ -1,0 +1,11 @@
+# Direct dependencies (DECISIONS.md D1, D2, D16). requirements.txt is the full resolved closure of this file
+# for the Apps runtime; the build installs requirements.txt only.
+mcp==2.3.0
+httpx2==2.16.0
+databricks-sdk==0.122.0
+streamlit==1.66.1
+# 2.32.5 had a known vulnerability (PYSEC-2026-2275, fixed in 2.33.0).
+requests==2.34.2
+# Not imported by the app. The Apps runtime preinstalls fastapi 0.115, which requires starlette<0.39 and so
+# conflicts with the starlette that streamlit and mcp need. Pinning a compatible fastapi removes the conflict.
+fastapi==0.162.0

@@ -1,0 +1,10 @@
+Synthetic test data: trading a Pokemon over the Link Cable.
+
+1. Ash opens the trade menu on his Game Boy and sends a trade request to Gary.
+2. Gary's Game Boy shows the request and Gary accepts it.
+3. Ash's Game Boy sends the offered Pokemon (Kadabra) to the Link Cable service.
+4. The Link Cable service checks that both save files are valid and returns OK to both players.
+5. Gary's Game Boy sends the offered Pokemon (Graveler) to the Link Cable service.
+6. The Link Cable service swaps the two Pokemon and sends Graveler to Ash and Kadabra to Gary.
+7. Kadabra evolves into Alakazam on Gary's Game Boy; Graveler evolves into Golem on Ash's Game Boy.
+8. Both Game Boys save the game and report "Trade complete" to their players.

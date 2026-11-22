@@ -1,0 +1,8 @@
+Synthetic test data: ideas for a Pokemon trainer's first week.
+
+Central topic: Becoming a Pokemon trainer
+- Starter Pokemon: Bulbasaur, Charmander, Squirtle
+- Training: daily battles, type matchups, learning new moves
+- Travel: Viridian Forest, Pewter City, Mt. Moon
+- Supplies: Poke Balls, Potions, Repels, Town Map
+- Goals: first gym badge (Boulder Badge), complete 20 Pokedex entries, make a rival

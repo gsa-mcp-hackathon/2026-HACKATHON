@@ -1,0 +1,16 @@
+command: ["streamlit", "run", "app.py"]
+env:
+  - name: STREAMLIT_BROWSER_GATHER_USAGE_STATS
+    value: "false"
+  # Reject uploads over 14 MB before they reach the app (code review L7). Unit: MB.
+  - name: STREAMLIT_SERVER_MAX_UPLOAD_SIZE
+    value: "14"
+  # Deployment settings (code review L3; see client/config.py). These are the defaults, made explicit.
+  - name: LANCELOT_SERVER_BASE
+    value: "https://mcp-lancelot-beta-7474654188777746.aws.databricksapps.com"
+  - name: LANCELOT_VOLUME_ROOT
+    value: "/Volumes/users/tom_jacobson/lancelot_traces"
+  - name: LANCELOT_OWNER_EMAIL
+    value: "tom.jacobson@hq.dhs.gov"
+  - name: LANCELOT_OWNER_V11_PATH
+    value: "/Users/tom.jacobson@hq.dhs.gov/lancelot-client/samples/sample.pdf"

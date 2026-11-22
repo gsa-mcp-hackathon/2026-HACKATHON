@@ -1,0 +1,13 @@
+{
+  "workflow": "Pokemon Center healing request (synthetic test data)",
+  "steps": [
+    {"id": "arrive", "label": "Trainer arrives at the counter", "next": ["check"]},
+    {"id": "check", "label": "Nurse Joy checks the trainer card", "next": ["valid"]},
+    {"id": "valid", "label": "Card valid?", "type": "decision", "yes": "heal", "no": "register"},
+    {"id": "register", "label": "Register new trainer", "next": ["heal"]},
+    {"id": "heal", "label": "Place Poke Balls in the healing machine", "next": ["status"]},
+    {"id": "status", "label": "All Pokemon healthy?", "type": "decision", "yes": "return", "no": "specialist"},
+    {"id": "specialist", "label": "Send to Professor Oak's lab", "next": ["return"]},
+    {"id": "return", "label": "Return Pokemon to trainer", "next": []}
+  ]
+}
