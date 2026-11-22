@@ -1,0 +1,902 @@
+[
+  {
+    "rank": 1,
+    "name": "Pikachu",
+    "description": "The iconic electric mouse and franchise mascot",
+    "weight_kg": 6.0,
+    "weight_lbs": 13.2,
+    "element_tcg": "Lightning-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 2,
+    "name": "Charizard",
+    "description": "Powerful flame-breathing dragon starter",
+    "weight_kg": 90.5,
+    "weight_lbs": 200.0,
+    "element_tcg": "Fire-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 3,
+    "name": "Greninja",
+    "description": "Swift water-shuriken throwing ninja frog",
+    "weight_kg": 40.0,
+    "weight_lbs": 88.2,
+    "element_tcg": "Water-type",
+    "release_year": 2013
+  },
+  {
+    "rank": 4,
+    "name": "Lucario",
+    "description": "Fighting jackal that senses aura energy",
+    "weight_kg": 54.0,
+    "weight_lbs": 118.9,
+    "element_tcg": "Fighting-type",
+    "release_year": 2006
+  },
+  {
+    "rank": 5,
+    "name": "Eevee",
+    "description": "Fan-favorite fox capable of unique evolutions",
+    "weight_kg": 6.5,
+    "weight_lbs": 14.3,
+    "element_tcg": "Colorless-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 6,
+    "name": "Gengar",
+    "description": "Mischievous shadow-dwelling ghost trickster",
+    "weight_kg": 40.5,
+    "weight_lbs": 89.3,
+    "element_tcg": "Psychic-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 7,
+    "name": "Mewtwo",
+    "description": "Genetically engineered ultimate clone legendary",
+    "weight_kg": 122.0,
+    "weight_lbs": 269.0,
+    "element_tcg": "Psychic-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 8,
+    "name": "Umbreon",
+    "description": "Moonlight-evolving dark fox Eeveelution",
+    "weight_kg": 27.0,
+    "weight_lbs": 59.5,
+    "element_tcg": "Darkness-type",
+    "release_year": 1999
+  },
+  {
+    "rank": 9,
+    "name": "Rayquaza",
+    "description": "Legendary serpentine dragon of the high skies",
+    "weight_kg": 206.5,
+    "weight_lbs": 455.3,
+    "element_tcg": "Dragon-type",
+    "release_year": 2002
+  },
+  {
+    "rank": 10,
+    "name": "Sylveon",
+    "description": "Ribbon-adorned fairy-type Eeveelution",
+    "weight_kg": 23.5,
+    "weight_lbs": 51.8,
+    "element_tcg": "Fairy-type",
+    "release_year": 2013
+  },
+  {
+    "rank": 11,
+    "name": "Garchomp",
+    "description": "Fearsome land-shark hammerhead dragon",
+    "weight_kg": 95.0,
+    "weight_lbs": 209.4,
+    "element_tcg": "Dragon-type",
+    "release_year": 2006
+  },
+  {
+    "rank": 12,
+    "name": "Gardevoir",
+    "description": "Graceful loyal protector psychic guardian",
+    "weight_kg": 48.4,
+    "weight_lbs": 106.7,
+    "element_tcg": "Psychic-type",
+    "release_year": 2002
+  },
+  {
+    "rank": 13,
+    "name": "Dragonite",
+    "description": "Lovable, kind-hearted sea-crossing dragon savior",
+    "weight_kg": 210.0,
+    "weight_lbs": 463.0,
+    "element_tcg": "Dragon-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 14,
+    "name": "Snorlax",
+    "description": "Sleepy giant blocking routes to eat and rest",
+    "weight_kg": 460.0,
+    "weight_lbs": 1014.1,
+    "element_tcg": "Colorless-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 15,
+    "name": "Bulbasaur",
+    "description": "Loyal seed-carrying grass starter",
+    "weight_kg": 6.9,
+    "weight_lbs": 15.2,
+    "element_tcg": "Grass-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 16,
+    "name": "Arcanine",
+    "description": "Majestic and fiercely loyal giant fire canine",
+    "weight_kg": 155.0,
+    "weight_lbs": 341.7,
+    "element_tcg": "Fire-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 17,
+    "name": "Lugia",
+    "description": "Deep-sea legendary diving guardian of the ocean",
+    "weight_kg": 216.0,
+    "weight_lbs": 476.2,
+    "element_tcg": "Psychic-type",
+    "release_year": 1999
+  },
+  {
+    "rank": 18,
+    "name": "Mew",
+    "description": "Tiny, playful mythical ancestor containing all DNA",
+    "weight_kg": 4.0,
+    "weight_lbs": 8.8,
+    "element_tcg": "Psychic-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 19,
+    "name": "Gyarados",
+    "description": "Terrifying sea serpent evolved from useless Magikarp",
+    "weight_kg": 235.0,
+    "weight_lbs": 518.1,
+    "element_tcg": "Water-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 20,
+    "name": "Blastoise",
+    "description": "Massive turtle shell with high-pressure water cannons",
+    "weight_kg": 85.5,
+    "weight_lbs": 188.5,
+    "element_tcg": "Water-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 21,
+    "name": "Mimikyu",
+    "description": "Lonely ghost disguised in a handmade Pikachu cloak",
+    "weight_kg": 0.7,
+    "weight_lbs": 1.5,
+    "element_tcg": "Psychic-type",
+    "release_year": 2016
+  },
+  {
+    "rank": 22,
+    "name": "Decidueye",
+    "description": "Ghostly grass archer owl using quill arrows",
+    "weight_kg": 29.0,
+    "weight_lbs": 63.9,
+    "element_tcg": "Grass-type",
+    "release_year": 2016
+  },
+  {
+    "rank": 23,
+    "name": "Sceptile",
+    "description": "Agile jungle gecko with sharp leaf-blades on wrists",
+    "weight_kg": 52.2,
+    "weight_lbs": 115.1,
+    "element_tcg": "Grass-type",
+    "release_year": 2002
+  },
+  {
+    "rank": 24,
+    "name": "Blaziken",
+    "description": "Martial artist fire chicken with blazing kicks",
+    "weight_kg": 52.0,
+    "weight_lbs": 114.6,
+    "element_tcg": "Fire-type",
+    "release_year": 2002
+  },
+  {
+    "rank": 25,
+    "name": "Tyranitar",
+    "description": "Hulking armor-plated mountain destroyer",
+    "weight_kg": 202.0,
+    "weight_lbs": 445.3,
+    "element_tcg": "Darkness-type",
+    "release_year": 1999
+  },
+  {
+    "rank": 26,
+    "name": "Mudkip",
+    "description": "Small blue marsh mud-skipper starter",
+    "weight_kg": 7.6,
+    "weight_lbs": 16.8,
+    "element_tcg": "Water-type",
+    "release_year": 2002
+  },
+  {
+    "rank": 27,
+    "name": "Aegislash",
+    "description": "Living sword that swaps stance between offense and defense",
+    "weight_kg": 53.0,
+    "weight_lbs": 116.8,
+    "element_tcg": "Metal-type",
+    "release_year": 2013
+  },
+  {
+    "rank": 28,
+    "name": "Chandelure",
+    "description": "Haunted chandelier that burns spirits as fuel",
+    "weight_kg": 34.3,
+    "weight_lbs": 75.6,
+    "element_tcg": "Psychic-type",
+    "release_year": 2010
+  },
+  {
+    "rank": 29,
+    "name": "Venusaur",
+    "description": "Huge toad with a blooming giant tropical flower",
+    "weight_kg": 100.0,
+    "weight_lbs": 220.5,
+    "element_tcg": "Grass-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 30,
+    "name": "Absol",
+    "description": "Disaster-warning sleek dark scythe beast",
+    "weight_kg": 47.0,
+    "weight_lbs": 103.6,
+    "element_tcg": "Darkness-type",
+    "release_year": 2002
+  },
+  {
+    "rank": 31,
+    "name": "Scizor",
+    "description": "Crimson armored metal mantis with clamp claws",
+    "weight_kg": 118.0,
+    "weight_lbs": 260.1,
+    "element_tcg": "Metal-type",
+    "release_year": 1999
+  },
+  {
+    "rank": 32,
+    "name": "Flygon",
+    "description": "Sandstorm-kicking desert dragonfly dragon",
+    "weight_kg": 82.0,
+    "weight_lbs": 180.8,
+    "element_tcg": "Dragon-type",
+    "release_year": 2002
+  },
+  {
+    "rank": 33,
+    "name": "Zoroark",
+    "description": "Illusory trickster fox that defends its pack",
+    "weight_kg": 81.1,
+    "weight_lbs": 178.8,
+    "element_tcg": "Darkness-type",
+    "release_year": 2010
+  },
+  {
+    "rank": 34,
+    "name": "Luxray",
+    "description": "Electric lion with X-ray vision for hunting",
+    "weight_kg": 42.0,
+    "weight_lbs": 92.6,
+    "element_tcg": "Lightning-type",
+    "release_year": 2006
+  },
+  {
+    "rank": 35,
+    "name": "Metagross",
+    "description": "Four-legged steel supercomputer robotic tank",
+    "weight_kg": 550.0,
+    "weight_lbs": 1212.5,
+    "element_tcg": "Metal-type",
+    "release_year": 2002
+  },
+  {
+    "rank": 36,
+    "name": "Jolteon",
+    "description": "High-voltage spiky needle-fur electric fox",
+    "weight_kg": 24.5,
+    "weight_lbs": 54.0,
+    "element_tcg": "Lightning-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 37,
+    "name": "Espeon",
+    "description": "Loyal sun-loving split-tailed psychic cat",
+    "weight_kg": 26.5,
+    "weight_lbs": 58.4,
+    "element_tcg": "Psychic-type",
+    "release_year": 1999
+  },
+  {
+    "rank": 38,
+    "name": "Vaporeon",
+    "description": "Aquatic melt-into-water mermaid-like fox",
+    "weight_kg": 29.0,
+    "weight_lbs": 63.9,
+    "element_tcg": "Water-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 39,
+    "name": "Toxtricity",
+    "description": "Electric punk rock icon generating toxic currents",
+    "weight_kg": 40.0,
+    "weight_lbs": 88.2,
+    "element_tcg": "Lightning-type",
+    "release_year": 2019
+  },
+  {
+    "rank": 40,
+    "name": "Ho-Oh",
+    "description": "Rainbow phoenix legendary of eternal joy",
+    "weight_kg": 199.0,
+    "weight_lbs": 438.7,
+    "element_tcg": "Fire-type",
+    "release_year": 1999
+  },
+  {
+    "rank": 41,
+    "name": "Lapras",
+    "description": "Gentle sea ferry dinosaur carrying passengers",
+    "weight_kg": 220.0,
+    "weight_lbs": 485.0,
+    "element_tcg": "Water-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 42,
+    "name": "Hydreigon",
+    "description": "Brutal three-headed dark dragon of destruction",
+    "weight_kg": 160.0,
+    "weight_lbs": 352.7,
+    "element_tcg": "Dragon-type",
+    "release_year": 2010
+  },
+  {
+    "rank": 43,
+    "name": "Glaceon",
+    "description": "Frost-weaving elegant diamond-dust ice fox",
+    "weight_kg": 25.9,
+    "weight_lbs": 57.1,
+    "element_tcg": "Water-type (TCG Ice)",
+    "release_year": 2006
+  },
+  {
+    "rank": 44,
+    "name": "Leafeon",
+    "description": "Photosynthesizing green-leaf physical attacker",
+    "weight_kg": 25.5,
+    "weight_lbs": 56.2,
+    "element_tcg": "Grass-type",
+    "release_year": 2006
+  },
+  {
+    "rank": 45,
+    "name": "Flareon",
+    "description": "Fire-breathing fluff-collared warm companion",
+    "weight_kg": 25.0,
+    "weight_lbs": 55.1,
+    "element_tcg": "Fire-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 46,
+    "name": "Alakazam",
+    "description": "Spoon-bending mentalist with an infinite memory",
+    "weight_kg": 48.0,
+    "weight_lbs": 105.8,
+    "element_tcg": "Psychic-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 47,
+    "name": "Infernape",
+    "description": "Flame-crowned acrobat monkey starter",
+    "weight_kg": 55.0,
+    "weight_lbs": 121.3,
+    "element_tcg": "Fire-type",
+    "release_year": 2006
+  },
+  {
+    "rank": 48,
+    "name": "Rowlet",
+    "description": "Spherical, adorable leaf-tie feather-spinning owl",
+    "weight_kg": 1.5,
+    "weight_lbs": 3.3,
+    "element_tcg": "Grass-type",
+    "release_year": 2016
+  },
+  {
+    "rank": 49,
+    "name": "Kyogre",
+    "description": "Sea-basin expanding legendary downpour leviathan",
+    "weight_kg": 352.0,
+    "weight_lbs": 776.0,
+    "element_tcg": "Water-type",
+    "release_year": 2002
+  },
+  {
+    "rank": 50,
+    "name": "Groudon",
+    "description": "Magma-walking continent building legendary beast",
+    "weight_kg": 950.0,
+    "weight_lbs": 2094.4,
+    "element_tcg": "Fighting-type",
+    "release_year": 2002
+  },
+  {
+    "rank": 51,
+    "name": "Dialga",
+    "description": "Metallic diamond master of chronological time",
+    "weight_kg": 683.0,
+    "weight_lbs": 1505.8,
+    "element_tcg": "Metal-type",
+    "release_year": 2006
+  },
+  {
+    "rank": 52,
+    "name": "Palkia",
+    "description": "Pearl-adorned draconic controller of spatial dimensions",
+    "weight_kg": 336.0,
+    "weight_lbs": 740.8,
+    "element_tcg": "Water-type",
+    "release_year": 2006
+  },
+  {
+    "rank": 53,
+    "name": "Darkrai",
+    "description": "Shadowy phantom legendary associated with dark dreams",
+    "weight_kg": 50.5,
+    "weight_lbs": 111.3,
+    "element_tcg": "Darkness-type",
+    "release_year": 2006
+  },
+  {
+    "rank": 54,
+    "name": "Reshiram",
+    "description": "Jet-engine tailed legendary dragon of truth",
+    "weight_kg": 330.0,
+    "weight_lbs": 727.5,
+    "element_tcg": "Dragon-type",
+    "release_year": 2010
+  },
+  {
+    "rank": 55,
+    "name": "Zekrom",
+    "description": "Turbine-tailed legendary thunderbolt dragon of ideals",
+    "weight_kg": 345.0,
+    "weight_lbs": 760.6,
+    "element_tcg": "Lightning-type",
+    "release_year": 2010
+  },
+  {
+    "rank": 56,
+    "name": "Dragapult",
+    "description": "Ancient supersonic ghost launchpad dragon",
+    "weight_kg": 50.0,
+    "weight_lbs": 110.2,
+    "element_tcg": "Dragon-type",
+    "release_year": 2019
+  },
+  {
+    "rank": 57,
+    "name": "Zacian",
+    "description": "Crowned wolf carrying the legendary giant sword",
+    "weight_kg": 355.0,
+    "weight_lbs": 782.6,
+    "element_tcg": "Metal-type",
+    "release_year": 2019
+  },
+  {
+    "rank": 58,
+    "name": "Togekiss",
+    "description": "Joy-bringing bird of peace and fortune",
+    "weight_kg": 38.0,
+    "weight_lbs": 83.8,
+    "element_tcg": "Colorless-type",
+    "release_year": 2006
+  },
+  {
+    "rank": 59,
+    "name": "Volcarona",
+    "description": "Flame-cocoon sun moth burning away darkness",
+    "weight_kg": 46.0,
+    "weight_lbs": 101.4,
+    "element_tcg": "Fire-type",
+    "release_year": 2010
+  },
+  {
+    "rank": 60,
+    "name": "Snom",
+    "description": "Tiny thread-spinning gluttonous ice caterpillar",
+    "weight_kg": 3.8,
+    "weight_lbs": 8.4,
+    "element_tcg": "Water-type (TCG Ice)",
+    "release_year": 2019
+  },
+  {
+    "rank": 61,
+    "name": "Heracross",
+    "description": "Mighty horn-throwing tree sap-loving beetle",
+    "weight_kg": 54.0,
+    "weight_lbs": 119.0,
+    "element_tcg": "Grass-type (TCG Bug)",
+    "release_year": 1999
+  },
+  {
+    "rank": 62,
+    "name": "Piplup",
+    "description": "Proud little blue crown penguin starter",
+    "weight_kg": 5.2,
+    "weight_lbs": 11.5,
+    "element_tcg": "Water-type",
+    "release_year": 2006
+  },
+  {
+    "rank": 63,
+    "name": "Oshawott",
+    "description": "Shell-sword swinging sea otter starter",
+    "weight_kg": 5.9,
+    "weight_lbs": 13.0,
+    "element_tcg": "Water-type",
+    "release_year": 2010
+  },
+  {
+    "rank": 64,
+    "name": "Ampharos",
+    "description": "Bright lighthouse shear-shorn yellow electric sheep",
+    "weight_kg": 61.5,
+    "weight_lbs": 135.6,
+    "element_tcg": "Lightning-type",
+    "release_year": 1999
+  },
+  {
+    "rank": 65,
+    "name": "Ninetales",
+    "description": "Nine-tailed curse-casting mystical beauty fox",
+    "weight_kg": 19.9,
+    "weight_lbs": 43.9,
+    "element_tcg": "Fire-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 66,
+    "name": "Suicune",
+    "description": "Pure stream-running legendary northern wind",
+    "weight_kg": 187.0,
+    "weight_lbs": 412.3,
+    "element_tcg": "Water-type",
+    "release_year": 1999
+  },
+  {
+    "rank": 67,
+    "name": "Scyther",
+    "description": "Razor-sharp green route forest mantis blade-master",
+    "weight_kg": 56.0,
+    "weight_lbs": 123.5,
+    "element_tcg": "Grass-type (TCG Bug)",
+    "release_year": 1996
+  },
+  {
+    "rank": 68,
+    "name": "Psyduck",
+    "description": "Constantly headachy water bird with psychic output",
+    "weight_kg": 19.6,
+    "weight_lbs": 43.2,
+    "element_tcg": "Water-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 69,
+    "name": "Growlithe",
+    "description": "Friendly striped fire puppy scout companion",
+    "weight_kg": 19.0,
+    "weight_lbs": 41.9,
+    "element_tcg": "Fire-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 70,
+    "name": "Raichu",
+    "description": "Crackling, long-tailed bulkier electric evolution",
+    "weight_kg": 30.0,
+    "weight_lbs": 66.1,
+    "element_tcg": "Lightning-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 71,
+    "name": "Pidgeot",
+    "description": "Broad-winged gale-force gust classic route bird",
+    "weight_kg": 39.5,
+    "weight_lbs": 87.1,
+    "element_tcg": "Colorless-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 72,
+    "name": "Nidoking",
+    "description": "Armored purple tail-swinging spike monster",
+    "weight_kg": 62.0,
+    "weight_lbs": 136.7,
+    "element_tcg": "Fighting-type (TCG Ground)",
+    "release_year": 1996
+  },
+  {
+    "rank": 73,
+    "name": "Machamp",
+    "description": "Heavy belt-wearing four-armed championship brawler",
+    "weight_kg": 130.0,
+    "weight_lbs": 286.6,
+    "element_tcg": "Fighting-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 74,
+    "name": "Slowpoke",
+    "description": "Oblivious tail-fishing beachside pink slowpoke",
+    "weight_kg": 36.0,
+    "weight_lbs": 79.4,
+    "element_tcg": "Water-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 75,
+    "name": "Gengar",
+    "description": "An enduring, mischievous classic",
+    "weight_kg": 40.5,
+    "weight_lbs": 89.3,
+    "element_tcg": "Psychic-type",
+    "release_year": 1996
+  },
+  {
+    "rank": 76,
+    "name": "Cubone",
+    "description": "Sorrowful skull-masked bone-club swing battler",
+    "weight_kg": 6.5,
+    "weight_lbs": 14.3,
+    "element_tcg": "Fighting-type (TCG Ground)",
+    "release_year": 1996
+  },
+  {
+    "rank": 77,
+    "name": "Staraptor",
+    "description": "Intimidating mohawked heavy aerial striker",
+    "weight_kg": 24.9,
+    "weight_lbs": 54.9,
+    "element_tcg": "Colorless-type",
+    "release_year": 2006
+  },
+  {
+    "rank": 78,
+    "name": "Jirachi",
+    "description": "Sleeping comet star that grants true wishes",
+    "weight_kg": 1.1,
+    "weight_lbs": 2.4,
+    "element_tcg": "Metal-type",
+    "release_year": 2002
+  },
+  {
+    "rank": 79,
+    "name": "Sableye",
+    "description": "Gemstone-munching cave dweller with crystal eyes",
+    "weight_kg": 11.0,
+    "weight_lbs": 24.3,
+    "element_tcg": "Darkness-type",
+    "release_year": 2002
+  },
+  {
+    "rank": 80,
+    "name": "Crobat",
+    "description": "Fast four-winged stealth flyer evolving from friendship",
+    "weight_kg": 75.0,
+    "weight_lbs": 165.3,
+    "element_tcg": "Psychic-type (TCG Poison)",
+    "release_year": 1999
+  },
+  {
+    "rank": 81,
+    "name": "Steelix",
+    "description": "Colossal iron-plated diamond-eating earth snake",
+    "weight_kg": 400.0,
+    "weight_lbs": 881.8,
+    "element_tcg": "Metal-type",
+    "release_year": 1999
+  },
+  {
+    "rank": 82,
+    "name": "Typhlosion",
+    "description": "Erupting flame collar volcano badger starter",
+    "weight_kg": 79.5,
+    "weight_lbs": 175.3,
+    "element_tcg": "Fire-type",
+    "release_year": 1999
+  },
+  {
+    "rank": 83,
+    "name": "Feraligatr",
+    "description": "Heavy-jawed intimidation water starter gator",
+    "weight_kg": 88.8,
+    "weight_lbs": 195.8,
+    "element_tcg": "Water-type",
+    "release_year": 1999
+  },
+  {
+    "rank": 84,
+    "name": "Sceptile",
+    "description": "The master of forest speed",
+    "weight_kg": 52.2,
+    "weight_lbs": 115.1,
+    "element_tcg": "Grass-type",
+    "release_year": 2002
+  },
+  {
+    "rank": 85,
+    "name": "Aggron",
+    "description": "Iron-clad mountain-dwelling territorial armor beast",
+    "weight_kg": 360.0,
+    "weight_lbs": 793.7,
+    "element_tcg": "Metal-type",
+    "release_year": 2002
+  },
+  {
+    "rank": 86,
+    "name": "Salamence",
+    "description": "Wings-of-fury soaring dragon power titan",
+    "weight_kg": 102.6,
+    "weight_lbs": 226.2,
+    "element_tcg": "Dragon-type",
+    "release_year": 2002
+  },
+  {
+    "rank": 87,
+    "name": "Milotic",
+    "description": "Rainbow-scaled ocean serpent of unmatched calm",
+    "weight_kg": 162.0,
+    "weight_lbs": 357.1,
+    "element_tcg": "Water-type",
+    "release_year": 2002
+  },
+  {
+    "rank": 88,
+    "name": "Aegislash",
+    "description": "The master of shifting combat stances",
+    "weight_kg": 53.0,
+    "weight_lbs": 116.8,
+    "element_tcg": "Metal-type",
+    "release_year": 2013
+  },
+  {
+    "rank": 89,
+    "name": "Sylveon",
+    "description": "The ribbon-bound fairy favorite",
+    "weight_kg": 23.5,
+    "weight_lbs": 51.8,
+    "element_tcg": "Fairy-type",
+    "release_year": 2013
+  },
+  {
+    "rank": 90,
+    "name": "Inteleon",
+    "description": "Fingertip sniper water lizard secret agent",
+    "weight_kg": 45.2,
+    "weight_lbs": 99.6,
+    "element_tcg": "Water-type",
+    "release_year": 2019
+  },
+  {
+    "rank": 91,
+    "name": "Empoleon",
+    "description": "Trident-beaked emperor penguin with iron-flipper wings",
+    "weight_kg": 84.5,
+    "weight_lbs": 186.3,
+    "element_tcg": "Metal-type",
+    "release_year": 2006
+  },
+  {
+    "rank": 92,
+    "name": "Corviknight",
+    "description": "Flying iron-clad taxi raven dominating Galar's skies",
+    "weight_kg": 75.0,
+    "weight_lbs": 165.3,
+    "element_tcg": "Metal-type",
+    "release_year": 2019
+  },
+  {
+    "rank": 93,
+    "name": "Lycanroc",
+    "description": "Sharp rocky-collared multi-form wild wolf",
+    "weight_kg": 25.0,
+    "weight_lbs": 55.1,
+    "element_tcg": "Fighting-type (TCG Rock)",
+    "release_year": 2016
+  },
+  {
+    "rank": 94,
+    "name": "Toxtricity",
+    "description": "The electric punk rock icon",
+    "weight_kg": 40.0,
+    "weight_lbs": 88.2,
+    "element_tcg": "Lightning-type",
+    "release_year": 2019
+  },
+  {
+    "rank": 95,
+    "name": "Snom",
+    "description": "The tiny icy darling",
+    "weight_kg": 3.8,
+    "weight_lbs": 8.4,
+    "element_tcg": "Water-type (TCG Ice)",
+    "release_year": 2019
+  },
+  {
+    "rank": 96,
+    "name": "Sableye",
+    "description": "The gem-eating ghost cave dweller",
+    "weight_kg": 11.0,
+    "weight_lbs": 24.3,
+    "element_tcg": "Darkness-type",
+    "release_year": 2002
+  },
+  {
+    "rank": 97,
+    "name": "Dedenne",
+    "description": "Tiny round cheek-antenna fairy mouse helper",
+    "weight_kg": 2.2,
+    "weight_lbs": 4.9,
+    "element_tcg": "Lightning-type",
+    "release_year": 2013
+  },
+  {
+    "rank": 98,
+    "name": "Cinccino",
+    "description": "Silky white coat chinchilla sweeps clean everything",
+    "weight_kg": 7.5,
+    "weight_lbs": 16.5,
+    "element_tcg": "Colorless-type",
+    "release_year": 2010
+  },
+  {
+    "rank": 99,
+    "name": "Snivy",
+    "description": "Regal, cool-eyed grass snake starter of Unova",
+    "weight_kg": 8.1,
+    "weight_lbs": 17.9,
+    "element_tcg": "Grass-type",
+    "release_year": 2010
+  },
+  {
+    "rank": 100,
+    "name": "Magnemite",
+    "description": "Magnetic floating ball machine with screws and magnets",
+    "weight_kg": 6.0,
+    "weight_lbs": 13.2,
+    "element_tcg": "Lightning-type",
+    "release_year": 1996
+  }
+]

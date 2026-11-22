@@ -1,0 +1,8 @@
+.git
+.venv
+**/.venv
+**/__pycache__
+.env
+presentation
+SUBMISSION_FINAL
+HACKATHON_BACKUP_2026_11_03

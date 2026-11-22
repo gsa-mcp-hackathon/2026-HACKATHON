@@ -1,0 +1,18 @@
+Please generate the syntax for the **DiagramNameHere*** Diagram you suggested.
+
+*A Note on Spacing*
+Our specific Mermaid environment is running in a highly strict security mode with a configuration called htmlLabels: false.
+
+Because of this, it prints HTML tags (<br>, <font>) and entities (&nbsp;) literally instead of rendering them.
+
+Our Mermaid environment engine automatically also runs a .trim() function on all labels, so any actual spaces and em-spaces are stripped out.
+
+The Undocumented Workaround: The "Invisible Letter" Trick
+
+To defeat both the HTML sanitizer and the whitespace trimmer, we can use a character that the system classifies as a visible letter, but that your screen renders as completely empty.
+
+The community's best-kept secret for this is the Braille Pattern Blank (U+2800). Because the layout engine sees this as a solid text character, it won't strip them.
+
+Use the following syntax formatting instructions to format it. Return only the correctly formatted Mermaid syntax.
+
+***InsertSyntaxHelpTextHere***

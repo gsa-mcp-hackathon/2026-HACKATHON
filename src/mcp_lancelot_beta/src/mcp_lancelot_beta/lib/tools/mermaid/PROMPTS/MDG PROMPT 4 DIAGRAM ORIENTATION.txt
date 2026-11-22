@@ -1,0 +1,19 @@
+## Choosing a Diagram Orientation (LR vs. TD)
+
+Before calling render_diagram, decide this diagram's orientation deliberately - do not default to LR out of habit, and do not leave it unset.
+
+Default to TD (top-down). A chat panel and most documents/screens are far more constrained in WIDTH than in height: vertical growth can scroll comfortably, but horizontal growth has nowhere to go except compressing every node's label text until it becomes unreadable - that is the single most common orientation mistake.
+
+Only choose LR when BOTH of these are true:
+- The diagram is short and mostly linear - a small number of nodes (roughly 8 or fewer) with little or no branching.
+- Reading left-to-right genuinely matches the content's meaning (e.g., a brief request/data path, a short pipeline, a small number of sequential stages).
+
+The real question is which dimension will end up holding the most elements, not just "how long is the main chain":
+- A long sequential chain (many steps, one after another) belongs in TD - letting it grow DOWN instead of sideways.
+- A diagram that is wide-but-shallow (many sibling nodes branching from one or two parents, few sequential levels) can get just as squeezed in TD if forced top-down - judge by which axis is actually crowded, not by chain length alone.
+
+Treat BT (bottom-to-top) and RL (right-to-left) as essentially never the right choice. Only use them if the user explicitly and unambiguously asks for a bottom-up or right-to-left reading order.
+
+ALL of the above is a DEFAULT that applies only when the user hasn't stated a preference. If the user explicitly asks for a specific orientation - by name ("make this top-down", "flip it to left-right") or by clear description ("can you lay this out going down the page instead") - honor that request exactly, even if it conflicts with the reasoning above. An explicit user instruction always overrides this heuristic.
+
+This decision is not one-and-done. Re-check it on every later edit/regeneration of this diagram too, not only the first time you generate it - if the user has been adding nodes over several turns, the diagram may have grown past the point where its original orientation still reads well, and you should proactively switch it (and tell the user you did, briefly) rather than silently keep compounding the squeeze - unless the user's own explicit direction request from above is still what's governing it, in which case leave it alone.

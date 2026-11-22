@@ -1,0 +1,5 @@
+# Databricks sandbox configuration. This file does not establish a deployment.
+command: ["python", "-m", "fema_oversight.server"]
+env:
+  - name: PYTHONPATH
+    value: src

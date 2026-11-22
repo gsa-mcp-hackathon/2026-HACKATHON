@@ -1,0 +1,40 @@
+From the attached document, please help the user determine how many and what kind of useful visual diagrams could be created from the document context. A diagram is considered useful if it is non-trivial and has at least 3 discrete steps or components. For example, a description of the standard operating procedures for a chain of custody works would be considered a useful diagram if it has more than 3 steps. A description of the data architecture of a system would also be considered useful if it contained multiple devices, layers, apps, APIs, etc. Useful diagrams are those that are both non-trivial and can take advantage of the capabilities of the Mermaid diagram syntax.
+
+Please reply to the user only with a description of each potential diagram you think would be suitable. Your response for each potential diagram must also contain the Diagram type (Mermaid keyword) so that the user can follow up later with specific syntax instructions for you. The description of each potential diagram should include what the diagram would show, a few of its salient features, and how many elements it would contain. Do not actually generate any Mermaid syntax at this time.
+
+Here is a list of the different kinds of diagrams available in Mermaid, along with a brief description of when to use each one:
+
+| Doc | Diagram type (Mermaid keyword) | Brief description | Best suited to display |
+|---|---|---|---|
+| `agentflow.md` | Agentflow (`agentflow-beta`) | Flowchart-like agentic workflow showing *who* does steps, with what tools/contracts, and semantic edge types. | Multi-agent orchestration, tool calls, control/data flow, failure paths. |
+| `architecture.md` | Architecture (`architecture-beta`) | Cloud/CI/CD-style architecture showing services/resources, grouped and connected with edges. | Infra/service topology, deployments, integrations, resource relationships. |
+| `block.md` | Block diagram (`block`) | High-level system blocks and connectors with explicit author control over layout. | Component/function breakdowns where exact positioning matters. |
+| `c4.md` | C4 (`C4Context`, `C4Container`, etc.) | Software architecture diagrams aligned with the C4 model. | System context → containers → components; stakeholder-friendly architecture views. |
+| `classDiagram.md` | Class diagram (`classDiagram`) | UML-style classes with relationships (inheritance/association/etc.). | Object models, domain models, API/type structure. |
+| `cynefin.md` | Cynefin (`cynefin`) | Cynefin framework: five domains with different decision approaches. | Categorizing problems/decisions by complexity/uncertainty; sense-making. |
+| `entityRelationshipDiagram.md` | ERD (`erDiagram`) | Entity types and relationships with cardinalities. | Database schema and data-model structure. |
+| `eventmodeling.md` | Event Modeling (`eventmodeling`) | Timeline/swimlane-style modeling of how information changes over time (triggers, commands, events, views). | Event-driven systems, user-visible flows, CQRS/ES narratives. |
+| `flowchart.md` | Flowchart (`flowchart`) | General-purpose node/edge graphs with rich shapes and routing. | Processes, decision logic, workflows, dependency flows. |
+| `gantt.md` | Gantt (`gantt`) | Time-based task bars across a schedule timeline. | Project plans, task durations, dependencies, milestones, calendars/exclusions. |
+| `gitgraph.md` | GitGraph (`gitGraph`) | Git commit/branch/merge visualization. | Branching strategies, release flows, history explanations. |
+| `ishikawa.md` | Ishikawa/Fishbone (`ishikawa`) | Cause-and-effect diagram organized into contributing factors. | Root-cause analysis; categorizing causes of a problem. |
+| `kanban.md` | Kanban (`kanban`) | Columns (stages) with tasks/cards arranged by workflow state. | Work-in-progress tracking, team workflow visualization. |
+| `mindmap.md` | Mindmap (`mindmap`) | Radial/hierarchical idea map around a central concept. | Topic decomposition, brainstorming, knowledge organization. |
+| `packet.md` | Packet diagram (`packet`) | Bit/field layout of network packet structures. | Protocol headers, binary field allocations, on-the-wire formats. |
+| `pie.md` | Pie/Donut (`pie`) | Part-to-whole slices (optionally donut). | Category proportions that sum to a whole (small number of categories). |
+| `quadrantChart.md` | Quadrant chart (`quadrantChart`) | 2D grid split into four labeled quadrants with plotted points. | Prioritization matrices (impact/effort), segmentation, risk/value mapping. |
+| `radar.md` | Radar (`radar`) | Multivariate values plotted on radial axes. | Comparing profiles across several dimensions (skills, KPIs, features). |
+| `railroad.md` | Railroad (`railroad`, `railroad-ebnf-beta`) | Grammar/syntax diagrams (Wirth-style) from structured notation. | Language grammars, protocol/message formats, EBNF-like specs. |
+| `requirementDiagram.md` | Requirement diagram (`requirementDiagram`) | SysML-style requirements, elements, and relationships/trace links. | Requirement specs, traceability, verification links, dependency mapping. |
+| `sankey.md` | Sankey (`sankey-beta`) | Flow diagram where link width represents quantity. | Energy/material/cost/user-flow volumes across stages. |
+| `sequenceDiagram.md` | Sequence diagram (`sequenceDiagram`) | Time-ordered interactions between participants via messages. | API call flows, protocols, request/response lifecycles, concurrency narratives. |
+| `stateDiagram.md` | State diagram (`stateDiagram`) | State machine with transitions and events/guards. | Lifecycle modeling (orders, sessions), control logic, finite-state behavior. |
+| `swimlanes.md` | Swimlanes (`swimlane-beta`) | Process flow partitioned by responsibility lanes (teams/systems). | Handoffs, approvals, cross-team workflows, ownership boundaries. |
+| `timeline.md` | Timeline (`timeline`) | Chronological sequence of events grouped into sections. | Historical sequences, releases, incident timelines, dated milestones. |
+| `treeView.md` | TreeView (`tree`) | Directory-like hierarchical tree with file/folder styling. | File structures, hierarchical inventories, taxonomy lists. |
+| `treemap.md` | Treemap (`treemap`) | Nested rectangles sized by value to show hierarchy + proportions. | Hierarchical part-to-whole (budget by org, disk usage by folder, etc.). |
+| `usecase.md` | Use case (`usecase-beta`) | Actors and the use cases they interact with in a system boundary. | Functional scope, user roles vs system capabilities, requirements overview. |
+| `userJourney.md` | User journey (`journey`) | Steps grouped into sections with actors and per-step scores. | UX flows, user tasks, pain-point scoring across a journey. |
+| `venn.md` | Venn (`venn`) | Overlapping sets showing intersections. | Set relationships, overlaps, shared vs distinct categories. |
+| `wardley.md` | Wardley map (`wardley`) | Value chain vs evolution/commoditization positioning of components. | Strategy maps: capabilities, dependencies, maturity, build/buy decisions. |
+| `xyChart.md` | XY chart (`xychart`, `xychart-beta`) | Bar/line charts on x/y axes (categorical x or numeric ranges). | Time series and category comparisons; any numeric series over categories or ranges. |
