@@ -1,49 +1,66 @@
-# FEMA Oversight MCP
+# mcp-lancelot-beta
 
-**Start here, judges:** [submission package](SUBMISSION.md), [judges deck](presentation/FEMA_Oversight_MCP_Judges_Deck.pptx), [editable Word package](docs/FEMA_Oversight_MCP_Submission_Package.docx).
+A headless [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server, deployed as the Databricks App `mcp-lancelot-beta`, that turns one document (PDF, DOCX, XLSX, HTML, CSV, JSON, YAML, or text) into a Mermaid diagram rendered as a PNG. It is the server-side rebuild of the original "Lancelot Beta" Mermaid diagram generator web app.
 
-Public-data review preparation for FEMA Public Assistance. Six read-only MCP tools turn OpenFEMA funded-project records into a ranked review queue, documented screening results, and a worksheet evidence brief. Code computes the indicators. A human decides whether further review is warranted.
+**Status:** Phase 1 (startup self-test) is built and approved. Phase 2 (the `generate_diagram` MCP tool at `POST /mcp`) is built and being verified.
 
-MCP discovery displays the server name `FEMA Evidence & Oversight Graph`; the submission title is FEMA Oversight MCP. [Preview the slides as PDF](presentation/FEMA_Oversight_MCP_Judges_Deck.pdf) or [read the package as PDF](docs/FEMA_Oversight_MCP_Submission_Package.pdf).
+Connect an MCP client to `https://mcp-lancelot-beta-7474654188777746.aws.databricksapps.com/mcp` (stateless Streamable HTTP, Databricks OAuth). The single tool, `generate_diagram`, takes exactly one of `data` (text), `fileBase64` + `fileName`, or `workspacePath` (a file in your own `/Users/<you>/` folder), plus optional `diagramType` and `hint`, and returns a PNG plus JSON metadata.
 
-Phebe Arouni and Tom Jacobson. Dataset Access Server track. Sandbox prototype, server **1.1.0**, reconciled November 19, 2026.
+**Known limit:** when another Databricks App (such as `lancelot-client`) calls this server *as a signed-in user*, Databricks forwards the user's identity but not their access token, so `workspacePath` returns `ACCESS_DENIED`; such clients should send files as `fileBase64`. When the other app calls *as its own service principal*, `workspacePath` works, but only for files in that service principal's own `/Users/<application-id>/` folder (see `ARCHITECTURE.md`, invariant 15 and Q3).
 
-## Follow the submission in five minutes
+## Read first
 
-| Judge task | Direct path |
-| --- | --- |
-| Understand the problem and examples | [Submission package](SUBMISSION.md) and deck slides 1-8 |
-| See how the GSA template was used | [Template adaptation with pinned upstream links](docs/GSA_TEMPLATE_ALIGNMENT.md) |
-| Inspect the six tools and exact MCP arguments | [Tool contract and examples](docs/TOOLS.md) |
-| Reproduce the results without a Databricks account | [Quickstart](QUICKSTART.md), then [evaluation guide](eval/README.md) |
-| Trace a number to its source and date | [Claims register](docs/CLAIMS_REGISTER.md) |
-| Check security and remaining limits | [Security](SECURITY.md) and [technical design](docs/TECHNICAL_DESIGN.md) |
+| Document | What it is |
+|---|---|
+| [ARCHITECTURE.md](ARCHITECTURE.md) | The architecture, its invariants, and the review checklist for every change |
+| [BUILD_PLAN.md](BUILD_PLAN.md) | Build history, decision log, phase status, verification checklist and results |
+| [docs/V19_TRACE_FAILURE_TEST.md](docs/V19_TRACE_FAILURE_TEST.md) | Manual trace-failure test (run only on request) |
+| [lib/tools/mermaid/PROMPTS/MCP_REBUILD_GUIDE.md](lib/tools/mermaid/PROMPTS/MCP_REBUILD_GUIDE.md) | Original rebuild spec (superseded where BUILD_PLAN.md corrects it) |
+| [SECURITY.md](SECURITY.md), [LICENSE.md](LICENSE.md) | Carried over unchanged from the original app. `SECURITY.md` describes the old browser app; the MCP server's security rules are in [ARCHITECTURE.md section 11](ARCHITECTURE.md#11-security-and-data-handling) |
 
-## Verified results and scope
+## How it works
 
-- November 19 local verification: **63/63 unit and contract tests**, **33/33 offline MCP evaluation checks**, lint and format checks pass. The checked-in [machine-readable evidence](eval/results/20261119-local/) identifies the source fingerprint and run time.
-- November 18 historical v1.1 report: **37/37 checks**, comprising the same 33 offline checks plus four live checks. Its [report](eval/results/20261118T094257Z/EVALUATION_REPORT.md) is retained with its original date. The referenced Databricks-volume raw summary was not included in the original repository.
-- November 19 full verification: **37/37 checks passed**, including all four live checks, in run `20261119T134625Z`. An earlier attempt timed out; the retry succeeded. See the [full machine-readable result](eval/results/20261119-live-attempt/summary.json) and [verification status](eval/results/20261119-local/VERIFICATION.md).
+1. Text is extracted from the input (`inputs.mjs` around the original `extractText.mjs`, both in `lib/tools/mermaid/lib/`).
+2. An LLM picks the best diagram type (`selection.mjs`), unless the caller names one. Types listed in `diagramPolicy.mjs` (currently TreeView, Treemap, Cynefin) are never offered or accepted; edit that list to change it.
+3. The LLM writes Mermaid using the original syntax guides and DHS color rules in `lib/tools/mermaid/PROMPTS/` (`pipeline.mjs`). Models (set by the app's `llm-primary`/`llm-fallback` resources, not in code): `databricks-claude-haiku-4-5`, falling back to `databricks-gpt-5-4-mini` (decision D27).
+4. The original server-side renderer (`render.mjs`, `rasterizeWorker.mjs`) produces the PNG; invalid Mermaid gets one LLM repair attempt, and a diagram too large to render (over 8,000 px per side) gets one LLM resize attempt (result shows `resized: true`).
+5. Every run is traced to the Unity Catalog volume `users.tom_jacobson.lancelot_traces` (`lib/core/tracer.mjs`; all other modules named here are in `lib/tools/mermaid/lib/`).
 
-These checks evaluate calculations, contracts, errors and repeatability. They do not measure fraud detection, analyst agreement, model tool selection, time saved or operational adoption.
+On every start the server runs a self-test and writes an HTML report to `/Volumes/users/tom_jacobson/lancelot_traces/latest/startup-report.html` (download it from Catalog Explorer and open it in a browser).
 
-## Run
+## Repository layout
 
-```sh
-uv sync --extra dev --frozen
-uv run python main.py
+```text
+server.mjs            HTTP entry point, crash guards, startup self-test
+app.yaml              Databricks Apps start command and environment mapping
+package.json          Dependencies (rendering stack pinned exactly) and test script
+lib/core/             Shared by all tools: tracer, Databricks auth (D32)
+lib/tools/mermaid/    generate_diagram tool: lib/ (pipeline modules; see ARCHITECTURE.md section 4 for which are verbatim)
+                      and PROMPTS/ (prompt text and per-diagram syntax guides, verbatim from the original)
+selftest/             Non-sensitive sample documents for the startup self-test
+test/                 Unit tests (node:test; plus a Python test for ops/)
+ops/                  trace_cleanup.py: 30-day retention for runs/ and client-runs/, run by a scheduled job
+                      openfema_load.py: daily OpenFEMA PA load for the Choropleth tool (tables + JSON export to
+                      /Volumes/users/tom_jacobson/choropleth_data), run by a scheduled job (D39, D41)
+docs/                 Runbooks
 ```
 
-Default transport is stdio. Setting `PORT` or `DATABRICKS_APP_PORT` selects streamable HTTP at `/mcp`. No API key, model account or Databricks login is needed for the local server and offline checks. Live tools need internet access to OpenFEMA.
+## Testing
 
-## One submitted implementation
+Requires Node.js 22 or later; no npm packages are needed (rendering and Databricks calls are mocked):
 
-The canonical server is [`src/fema_oversight/server.py`](src/fema_oversight/server.py). Earlier source trees, backup bundles, old decks, duplicate packages and obsolete deployment instructions were removed from the current tree. [Cleanup record](docs/REPOSITORY_CLEANUP.md). Git history retains the earlier files.
+```bash
+node --test --experimental-test-module-mocks test/*.test.mjs
+```
 
-The older Databricks analyst app is a separate v1.0 demonstration. This repository does not claim that app runs the submitted v1.1 tools. Judges can evaluate v1.1 locally without it. There is no model-driven web UI or automatic human-approval workflow in v1.1.
+(`npm test` runs the same command.) The ops scripts' tests: `python -m unittest discover -s test -p "test_*.py"`. The deployed app is verified through its startup self-test trace; see ARCHITECTURE.md section 9.
 
-## Source and cautions
+## Deploying
 
-[OpenFEMA Public Assistance Funded Projects Details v2](https://www.fema.gov/openfema-data-page/public-assistance-funded-projects-details-v2). Estimated project amounts, obligations and payments are different measures. These public Grants Manager records are not official financial reporting. Category outliers use retrieved-category statistics, repeated titles can describe legitimate work, and cost-share authorizations are not verified. All outputs are review indicators requiring human judgment.
+Deploy from this folder through the Databricks Apps API after `databricks apps get mcp-lancelot-beta` shows `RUNNING` with no pending deployment. The full workflow, including the `VERSION.json` stamp and post-deploy verification, is in ARCHITECTURE.md section 12. Commits stay local; nothing is pushed to GitHub.
 
-Adapted from the [GSA MCP hackathon template](https://github.com/GSA-TTS/mcp-hackathon-template). [MIT license](LICENSE), including the original TTS notice. No agency endorsement or production authorization is claimed.
+## License
+
+The Unlicense; see [LICENSE.md](LICENSE.md). Security reporting: see [SECURITY.md](SECURITY.md); security rules for this server: [ARCHITECTURE.md section 11](ARCHITECTURE.md#11-security-and-data-handling).
+
+Data rule: while the app runs with `APP_TRACE_LEVEL=debug`, send it only synthetic or public documents (decision Q6).

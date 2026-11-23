@@ -1,8 +1,0 @@
-# Optional Cloud Foundry sandbox configuration. No fixed public route is assigned.
-applications:
-  - name: fema-oversight-mcp
-    buildpacks: [python_buildpack]
-    command: PYTHONPATH=src python -m fema_oversight.server
-    health-check-type: port
-    no-route: true
-    memory: 512M

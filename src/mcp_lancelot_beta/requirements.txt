@@ -1,4 +1,0 @@
-# Runtime constraints mirror pyproject.toml. uv.lock pins the tested environment.
-fastmcp>=2.12,<3
-httpx>=0.27
-pydantic>=2.7

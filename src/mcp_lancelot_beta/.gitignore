@@ -1,9 +1,17 @@
-.venv/
-__pycache__/
-*.py[cod]
-.pytest_cache/
-.ruff_cache/
+# Node
+node_modules/
+npm-debug.log*
+
+# Generated before each deploy (git commit + timestamp); see BUILD_PLAN.md section 8a
+VERSION.json
+
+# Environment variables
 .env
-*.egg-info/
-dist/
-build/
+
+# Python bytecode (from local tooling only)
+__pycache__/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
