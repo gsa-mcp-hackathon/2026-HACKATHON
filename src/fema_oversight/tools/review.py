@@ -27,7 +27,7 @@ from fema_oversight.schemas.outputs import (
     ReviewQueueResult,
     SourceRecord,
 )
-from fema_oversight.tools._registration import READ_ONLY_EXTERNAL, READ_ONLY_LOCAL, agent_errors
+from fema_oversight.tools._registration import READ_ONLY_EXTERNAL, READ_ONLY_LOCAL, agent_errors, observe_sync
 
 DEFAULT_SIGMA = 3.0
 DEFAULT_BAND = (0.70, 0.95)
@@ -357,6 +357,7 @@ def register(mcp: FastMCP, source: RecordSource) -> None:
         annotations=READ_ONLY_LOCAL,
         tags={"explanation"},
     )
+    @observe_sync
     def explain_review_indicator(params: ExplainIndicatorRequest) -> MethodologyCard:
         return run_explain(params)
 

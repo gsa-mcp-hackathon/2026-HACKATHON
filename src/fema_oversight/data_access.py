@@ -13,10 +13,14 @@ evaluation is the same code that runs in production.
 
 from __future__ import annotations
 
+import asyncio
 import json
 import math
+from collections import OrderedDict
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
+from time import monotonic
 from typing import Any, Protocol
 
 import httpx
@@ -29,6 +33,10 @@ PA_PATH = f"v2/{PA_ENTITY}"
 OPENFEMA_MAX_TOP = 10_000
 REQUEST_TIMEOUT_SECONDS = 30.0
 MAX_RESPONSE_BYTES = 20_000_000
+DEFAULT_RETRY_ATTEMPTS = 3
+DEFAULT_RETRY_DELAY_SECONDS = 0.25
+DEFAULT_CACHE_TTL_SECONDS = 60.0
+DEFAULT_CACHE_ENTRIES = 128
 
 
 @dataclass(frozen=True)
@@ -108,10 +116,32 @@ class OpenFEMASource:
     ``ReviewToolError`` (no URLs, headers, or stack traces reach the agent).
     """
 
-    def __init__(self, transport: httpx.AsyncBaseTransport | None = None) -> None:
+    def __init__(
+        self,
+        transport: httpx.AsyncBaseTransport | None = None,
+        *,
+        retry_attempts: int = DEFAULT_RETRY_ATTEMPTS,
+        retry_delay_seconds: float = DEFAULT_RETRY_DELAY_SECONDS,
+        sleep: Callable[[float], Awaitable[None]] = asyncio.sleep,
+    ) -> None:
         self._transport = transport  # injectable for tests
+        self._retry_attempts = max(1, retry_attempts)
+        self._retry_delay_seconds = max(0.0, retry_delay_seconds)
+        self._sleep = sleep
 
     async def fetch(self, query: PAQuery) -> FetchResult:
+        """Fetch records, retrying only failures explicitly marked retryable."""
+        for attempt in range(1, self._retry_attempts + 1):
+            try:
+                return await self._fetch_once(query)
+            except ReviewToolError as exc:
+                if not exc.retryable or attempt == self._retry_attempts:
+                    raise
+                await self._sleep(self._retry_delay_seconds * (2 ** (attempt - 1)))
+        raise AssertionError("retry loop exhausted without returning or raising")
+
+    async def _fetch_once(self, query: PAQuery) -> FetchResult:
+        """Execute one bounded OpenFEMA request and validate its envelope."""
         cap = min(max(query.record_cap, 1), OPENFEMA_MAX_TOP)
         params: dict[str, Any] = {"$top": cap, "$format": "json", "$select": ",".join(query.fields)}
         odata_filter = query.to_odata_filter()
@@ -197,6 +227,58 @@ class SnapshotSource:
         result = FetchResult(records=rows, record_cap=cap)
         if self._retrieved_at:
             result.retrieved_at = self._retrieved_at
+        return result
+
+
+class CachingRecordSource:
+    """Short-lived bounded cache with single-flight request coalescing.
+
+    OpenFEMA refreshes daily, while agents often call several tools over the same
+    scope in quick succession. This wrapper avoids duplicate network requests and
+    keeps cache lifetime deliberately short. Failures are never cached.
+    """
+
+    def __init__(
+        self,
+        source: RecordSource,
+        *,
+        ttl_seconds: float = DEFAULT_CACHE_TTL_SECONDS,
+        max_entries: int = DEFAULT_CACHE_ENTRIES,
+    ) -> None:
+        self._source = source
+        self._ttl_seconds = max(0.0, ttl_seconds)
+        self._max_entries = max(1, max_entries)
+        self._cache: OrderedDict[PAQuery, tuple[float, FetchResult]] = OrderedDict()
+        self._inflight: dict[PAQuery, asyncio.Task[FetchResult]] = {}
+        self._lock = asyncio.Lock()
+
+    async def fetch(self, query: PAQuery) -> FetchResult:
+        now = monotonic()
+        async with self._lock:
+            cached = self._cache.get(query)
+            if cached and now - cached[0] <= self._ttl_seconds:
+                self._cache.move_to_end(query)
+                return cached[1]
+            if cached:
+                del self._cache[query]
+            task = self._inflight.get(query)
+            owner = task is None
+            if owner:
+                task = asyncio.create_task(self._source.fetch(query))
+                self._inflight[query] = task
+        assert task is not None
+        try:
+            result = await task
+        finally:
+            if owner:
+                async with self._lock:
+                    self._inflight.pop(query, None)
+        if owner:
+            async with self._lock:
+                self._cache[query] = (monotonic(), result)
+                self._cache.move_to_end(query)
+                while len(self._cache) > self._max_entries:
+                    self._cache.popitem(last=False)
         return result
 
 

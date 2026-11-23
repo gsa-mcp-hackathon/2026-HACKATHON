@@ -58,5 +58,5 @@ async def test_resources_and_prompt(server):
     async with Client(server) as client:
         uris = {str(r.uri) for r in await client.list_resources()}
         prompts = {p.name for p in await client.list_prompts()}
-    assert uris == {"fema-pa://provenance", "fema-pa://methodology"}
+    assert uris == {"fema-pa://provenance", "fema-pa://methodology", "fema-pa://metrics"}
     assert prompts == {"disaster_review"}

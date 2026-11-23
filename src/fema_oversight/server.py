@@ -13,8 +13,9 @@ import os
 from fastmcp import FastMCP
 
 from fema_oversight import __version__
-from fema_oversight.data_access import OpenFEMASource, RecordSource
+from fema_oversight.data_access import CachingRecordSource, OpenFEMASource, RecordSource
 from fema_oversight.methodology import DATASET, DATASET_LIMITATIONS, FIELD_DEFINITIONS, METHODOLOGY_CARDS
+from fema_oversight.observability import configure_structured_logging, telemetry
 from fema_oversight.tools import review, screening
 
 SERVER_INSTRUCTIONS = """Read-only evidence tools over OpenFEMA Public Assistance Funded Projects Details (v2).
@@ -27,7 +28,8 @@ identifiers exactly as returned, include the provenance, and leave decisions to 
 
 def build_server(source: RecordSource | None = None) -> FastMCP:
     """Create the MCP server. Defaults to the live OpenFEMA source."""
-    records = source or OpenFEMASource()
+    configure_structured_logging()
+    records = source or CachingRecordSource(OpenFEMASource())
     mcp = FastMCP(
         name="FEMA Evidence & Oversight Graph",
         version=__version__,
@@ -54,6 +56,18 @@ def build_server(source: RecordSource | None = None) -> FastMCP:
     )
     def indicator_methodology() -> str:
         return json.dumps([card.model_dump(mode="json") for card in METHODOLOGY_CARDS.values()], indent=2)
+
+    @mcp.resource(
+        "fema-pa://metrics",
+        name="operational_metrics",
+        description=(
+            "Process-local aggregate tool counts, failures, and latency. "
+            "Contains no tool arguments or FEMA records and resets on restart."
+        ),
+        mime_type="application/json",
+    )
+    def operational_metrics() -> str:
+        return json.dumps(telemetry.snapshot(), indent=2)
 
     @mcp.prompt(
         name="disaster_review",
